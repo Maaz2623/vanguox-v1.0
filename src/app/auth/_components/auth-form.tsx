@@ -40,7 +40,7 @@ export function AuthForm() {
 
   return (
     <div
-      className={cn("flex flex-col gap-6 justify-center items-center w-full")}
+      className={cn("flex flex-col gap-6 justify-center items-center w-full ")}
     >
       <fieldset disabled={loading}>
         {formType === "login" ? (
@@ -210,7 +210,7 @@ const LoginForm = ({
                   type="button"
                   variant={`link`}
                   onClick={() => setFormType("signup")}
-                  className="underline underline-offset-4 text-white cursor-pointer"
+                  className="underline underline-offset-4 cursor-pointer"
                   size={`sm`}
                 >
                   Sign up
@@ -335,7 +335,7 @@ const SignUpForm = ({
         open={otpDialogOpen}
         setOpen={setOtpDialogOpen}
       />
-      <Card className="overflow-hidden p-0 w-[70%] mx-auto">
+      <Card className="overflow-hidden p-0 w-full mx-auto">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
             <form className="p-6 md:p-8" onSubmit={form.handleSubmit(onSubmit)}>
@@ -459,7 +459,7 @@ const SignUpForm = ({
                     onClick={() => setFormType("login")}
                     type="button"
                     variant={`link`}
-                    className="underline underline-offset-4 text-white cursor-pointer"
+                    className="underline underline-offset-4 cursor-pointer"
                     size={`sm`}
                   >
                     Sign in
