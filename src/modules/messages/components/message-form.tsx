@@ -34,6 +34,7 @@ export const MessageForm = () => {
                 <div className="flex">
                   <TextAreaAutoSize
                     rows={1}
+                    maxRows={3}
                     className="px-3 py-3 resize-none text-sm border-none w-full outline-none bg-transparent"
                     placeholder="What would you like to build?"
                     // onKeyDown={(e) => {
