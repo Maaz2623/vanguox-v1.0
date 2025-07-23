@@ -7,10 +7,14 @@ import { ArrowUpIcon, PaperclipIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import TextAreaAutoSize from "react-textarea-autosize";
 
-export const NewChatTemplateView = () => {
+export const HomeView = () => {
   const pathname = usePathname();
 
-  const onSubmit = () => {};
+  const router = useRouter();
+
+  const onSubmit = () => {
+    router.push(`/auth`);
+  };
 
   return (
     <div className="h-screen">
@@ -24,8 +28,8 @@ export const NewChatTemplateView = () => {
           className="w-full flex flex-col -mt-12 justify-center h-full items-center text-center"
         >
           <Image src="/logo.svg" alt="logo" width={80} height={80} priority />
-          <h1 className="md:text-4xl text-xl font-semibold mt-4">Vanguox AI</h1>
-          <p className="md:text-md text-sm text-pretty px-2 text-muted-foreground mt-2">
+          <h1 className="text-4xl font-semibold mt-4">Vanguox AI</h1>
+          <p className="text-md text-muted-foreground mt-2">
             A powerful AI system designed to enhance ideas and streamline
             creation.
           </p>
@@ -39,14 +43,14 @@ export const NewChatTemplateView = () => {
         }}
         animate={{ bottom: pathname === "/" ? 150 : 12, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="w-full md:w-2/3 md:px-0 px-1 mx-auto"
+        className="w-3/4 mx-auto"
         style={{
           position: "absolute",
           left: 0,
           right: 0,
         }}
       >
-        <div className="w-full mx-auto rounded-md shadow-md">
+        <div className="w-2/3 mx-auto rounded-md shadow-sm">
           <div className="rounded-lg w-full mx-auto dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-200 overflow-hidden p-2">
             <fieldset>
               <form className="" onSubmit={onSubmit}>
