@@ -37,7 +37,7 @@ export default async function ChatViewLayout({
             className="border-r border-neutral-200 dark:border-neutral-800"
           />
           <SidebarInset className="bg-transparent relative shadow-none! m-0! rounded-none! border-none!">
-            <ChatViewSiteHeader />
+            {/* <ChatViewSiteHeader /> */}
             {children}
           </SidebarInset>
         </SidebarProvider>

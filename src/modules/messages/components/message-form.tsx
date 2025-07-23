@@ -1,51 +1,58 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
-import { ArrowUpIcon, PaperclipIcon } from "lucide-react";
+import {
+  ArrowUpIcon,
+  Loader2Icon,
+  PaperclipIcon,
+  SquareIcon,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
+import React from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 
-export const MessageForm = () => {
+interface Props {
+  chatId: string;
+}
+
+export const MessageForm = ({ chatId }: Props) => {
+  const { input, handleInputChange, handleSubmit, status } = useChat({
+    id: chatId,
+  });
+
   const pathname = usePathname();
 
-  const onSubmit = () => {};
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
 
   return (
     <>
-      <motion.div
-        layout
-        initial={{
-          bottom: pathname === "/" ? 12 : 150,
-          opacity: 0,
-        }}
-        animate={{ bottom: pathname === "/" ? 150 : 12, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="w-3/4 mx-auto"
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-        }}
-      >
-        <div className="w-2/3 mx-auto">
-          <div className="rounded-lg w-full mx-auto bg-neutral-200 dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-300 overflow-hidden p-2">
+      <div className="w-3/4 mx-auto flex flex-col justify-center items-end">
+        <div className="" />
+        <div className="w-full mx-auto rounded-md shadow-md">
+          <div className="rounded-lg mx-auto dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-200 bg-white overflow-hidden p-2">
             <fieldset>
               <form className="" onSubmit={onSubmit}>
                 <div className="flex">
                   <TextAreaAutoSize
                     rows={1}
                     maxRows={3}
+                    onChange={handleInputChange}
+                    value={input}
                     className="px-3 py-3 resize-none text-sm border-none w-full outline-none bg-transparent"
                     placeholder="What would you like to build?"
-                    // onKeyDown={(e) => {
-                    //   if (e.key === "Enter") {
-                    //     if (e.shiftKey) return; // Allow newline
-                    //     e.preventDefault();
-                    //     if (e.ctrlKey || !e.metaKey) {
-                    //       onSubmit(e);
-                    //     }
-                    //   }
-                    // }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        if (e.shiftKey) return; // Allow newline
+                        e.preventDefault();
+                        if (e.ctrlKey || !e.metaKey) {
+                          onSubmit(e);
+                        }
+                      }
+                    }}
                   />
                 </div>
                 <div className="h-8 flex justify-between items-center">
@@ -62,16 +69,23 @@ export const MessageForm = () => {
                   <Button
                     size="icon"
                     type="submit"
+                    onClick={handleSubmit}
                     className="h-8 shadow-none w-8"
                   >
-                    <ArrowUpIcon className="size-4" />
+                    {status === "ready" && <ArrowUpIcon className="size-4" />}
+                    {status === "submitted" && (
+                      <Loader2Icon className="animate-spin" />
+                    )}
+                    {status === "streaming" && (
+                      <SquareIcon className="fill-white" />
+                    )}
                   </Button>
                 </div>
               </form>
             </fieldset>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

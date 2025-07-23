@@ -9,7 +9,7 @@
   --card-foreground: oklch(0 0 0);
   --popover: oklch(0.9900 0 0);
   --popover-foreground: oklch(0 0 0);
-  --primary: oklch(0 0 0);
+  --primary: oklch(27.274% 0.00003 271.152);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.9400 0 0);
   --secondary-foreground: oklch(0 0 0);
@@ -158,4 +158,11 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Override highlight.js background */
+.hljs,
+.hljs pre,
+.hljs code {
+  background: transparent !important;
 }

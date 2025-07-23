@@ -4,13 +4,15 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, PaperclipIcon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import TextAreaAutoSize from "react-textarea-autosize";
 
 export const NewChatTemplateView = () => {
   const pathname = usePathname();
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    
+  };
 
   return (
     <div className="h-screen">
