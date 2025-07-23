@@ -1,8 +1,9 @@
 "use server"
 
 import { db } from "@/db";
-import { messagesTable } from "@/db/schema";
+import { chatsTable, messagesTable } from "@/db/schema";
 import { Message } from "ai";
+import { eq } from "drizzle-orm";
 
 
 
@@ -26,4 +27,18 @@ export async function saveChat({
   } catch (error) {
     console.error('Failed to save chat:', error);
   }
+}
+
+
+export async function updateChatSummary({
+  chatId,
+  summary,
+}: {
+  chatId: string;
+  summary: string;
+}) {
+  await db
+    .update(chatsTable)
+    .set({ title: summary })
+    .where(eq(chatsTable.id, chatId));
 }

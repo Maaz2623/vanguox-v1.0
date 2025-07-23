@@ -1,13 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useTRPC } from "@/trpc/client";
 import { Message, useChat } from "@ai-sdk/react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   ArrowUpIcon,
   Loader2Icon,
   PaperclipIcon,
   SquareIcon,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 
 interface Props {
@@ -21,10 +23,26 @@ export const MessageForm = ({ chatId, initialMessages }: Props) => {
     initialMessages: initialMessages,
   });
 
+  const queryClient = useQueryClient();
+
+  const trpc = useTRPC();
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSubmit();
   };
+
+  console.log(initialMessages.length);
+
+  useEffect(() => {
+    if (initialMessages.length < 4) {
+      queryClient.invalidateQueries(
+        trpc.chats.getChat.queryOptions({
+          chatId,
+        })
+      ); // optionally pass a specific query key
+    }
+  }, [initialMessages.length, queryClient, trpc.chats.getChat, chatId]);
 
   return (
     <>

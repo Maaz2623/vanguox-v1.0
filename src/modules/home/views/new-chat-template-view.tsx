@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, Loader2Icon, PaperclipIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import TextAreaAutoSize from "react-textarea-autosize";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { useState } from "react";
 
@@ -14,6 +14,8 @@ export const NewChatTemplateView = () => {
   const [input, setInput] = useState("");
 
   const pathname = usePathname();
+
+  const queryClient = useQueryClient();
 
   const trpc = useTRPC();
 
@@ -24,6 +26,7 @@ export const NewChatTemplateView = () => {
   const onSubmit = () => {
     createChat.mutate(undefined, {
       onSuccess: async (data) => {
+        queryClient.invalidateQueries(trpc.chats.getChatsList.queryOptions());
         setInput("");
         const params = new URLSearchParams({ message: input });
         router.push(`/chats/${data}?${params.toString()}`);

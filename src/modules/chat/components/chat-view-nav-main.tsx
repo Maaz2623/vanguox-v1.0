@@ -12,7 +12,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import {
   Collapsible,
@@ -22,6 +22,8 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function ChatViewNavMain({
   items,
@@ -34,9 +36,15 @@ export function ChatViewNavMain({
 }) {
   const router = useRouter();
 
+  const pathname = usePathname();
+
   const trpc = useTRPC();
 
-  const { data } = useQuery(trpc.chats.getChatsList.queryOptions());
+  const { data } = useQuery(
+    trpc.chats.getChatsList.queryOptions(undefined, {
+      refetchInterval: 5000,
+    })
+  );
 
   return (
     <SidebarGroup>
@@ -74,15 +82,26 @@ export function ChatViewNavMain({
                     <CollapsibleContent>
                       <ScrollArea className="h-[200px]">
                         <SidebarMenuSub>
-                          {data?.map((item) => (
-                            <SidebarMenuSubItem key={Math.random()}>
-                              <SidebarMenuSubButton asChild>
-                                <a href={`/chats/${item.id}`}>
-                                  <span>{item.title}</span>
-                                </a>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
+                          {data?.map((item) => {
+                            const isActive = pathname === `/chats/${item.id}`;
+                            return (
+                              <SidebarMenuSubItem key={Math.random()}>
+                                <SidebarMenuSubButton
+                                  className={cn(
+                                    "",
+                                    isActive && "bg-neutral-500/10"
+                                  )}
+                                  asChild
+                                >
+                                  <Link href={`/chats/${item.id}`}>
+                                    <span className="w-[80%] truncate">
+                                      {item.title}
+                                    </span>
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            );
+                          })}
                         </SidebarMenuSub>
                       </ScrollArea>
                     </CollapsibleContent>
