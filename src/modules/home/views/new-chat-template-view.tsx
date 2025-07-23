@@ -50,8 +50,8 @@ export const NewChatTemplateView = () => {
           right: 0,
         }}
       >
-        <div className="w-2/3 mx-auto">
-          <div className="rounded-lg shadow-sm w-full mx-auto bg-neutral-100 dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-200 overflow-hidden p-2">
+        <div className="w-2/3 mx-auto rounded-md shadow-sm">
+          <div className="rounded-lg w-full mx-auto dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-200 overflow-hidden p-2">
             <fieldset>
               <form className="" onSubmit={onSubmit}>
                 <div className="flex">
@@ -59,7 +59,7 @@ export const NewChatTemplateView = () => {
                     rows={1}
                     maxRows={3}
                     className="px-3 py-3 resize-none text-sm border-none w-full outline-none bg-transparent"
-                    placeholder="What would you like to build?"
+                    placeholder="What's on your mind today?"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         if (e.shiftKey) return; // Allow newline
