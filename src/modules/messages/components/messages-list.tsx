@@ -110,9 +110,9 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
             parts={message.parts}
           />
         ))}
-        {status === "submitted" && (
-          <div className="flex items-center justify-center size-10 m-2">
-            <SyncLoader className="" size={6} color="#ffff" margin={2} />
+        {isLastMessageUser && (
+          <div className="flex items-center justify-center size-10 mt-10 m-2">
+            <SyncLoader className="" size={6} color="#000" margin={2} />
           </div>
         )}
         {streamingMessage && (
