@@ -1,4 +1,5 @@
-import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { Message } from 'ai';
+import { boolean, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 
 
@@ -57,5 +58,15 @@ export const chatsTable = pgTable("chats", {
 	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
 	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 })
+
+
+export const messagesTable = pgTable('messages', {
+  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  chatId: uuid('chat_id').references(() => chatsTable.id, {
+	onDelete: "cascade"
+  }).notNull(),
+  message: jsonb('message').$type<Message>(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
 
 

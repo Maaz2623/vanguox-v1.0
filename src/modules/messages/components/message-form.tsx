@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useChat } from "@ai-sdk/react";
+import { Message, useChat } from "@ai-sdk/react";
 import {
   ArrowUpIcon,
   Loader2Icon,
@@ -12,11 +12,13 @@ import TextAreaAutoSize from "react-textarea-autosize";
 
 interface Props {
   chatId: string;
+  initialMessages: Message[];
 }
 
-export const MessageForm = ({ chatId }: Props) => {
+export const MessageForm = ({ chatId, initialMessages }: Props) => {
   const { input, handleInputChange, handleSubmit, status, stop } = useChat({
     id: chatId,
+    initialMessages: initialMessages,
   });
 
   const onSubmit = (e: React.FormEvent) => {

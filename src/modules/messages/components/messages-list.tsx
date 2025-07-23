@@ -1,6 +1,6 @@
 "use client";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useChat } from "@ai-sdk/react";
+import { Message, useChat } from "@ai-sdk/react";
 import { MessageCard } from "./message-card";
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
@@ -8,11 +8,13 @@ import { SyncLoader } from "react-spinners";
 
 interface Props {
   chatId: string;
+  initialMessages: Message[];
 }
 
-export const MessagesList = ({ chatId }: Props) => {
+export const MessagesList = ({ chatId, initialMessages }: Props) => {
   const { messages, handleInputChange, handleSubmit, status } = useChat({
     id: chatId,
+    initialMessages: initialMessages,
   });
 
   const bottomRef = useRef<HTMLDivElement>(null);
