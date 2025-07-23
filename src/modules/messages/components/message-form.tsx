@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const MessageForm = ({ chatId }: Props) => {
-  const { input, handleInputChange, handleSubmit, status } = useChat({
+  const { input, handleInputChange, handleSubmit, status, stop } = useChat({
     id: chatId,
   });
 
@@ -30,55 +30,62 @@ export const MessageForm = ({ chatId }: Props) => {
         <div className="" />
         <div className="w-full mx-auto rounded-md shadow-md">
           <div className="rounded-lg mx-auto dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-200 bg-white overflow-hidden p-2">
-            <fieldset>
-              <form className="" onSubmit={onSubmit}>
-                <div className="flex">
-                  <TextAreaAutoSize
-                    rows={1}
-                    maxRows={3}
-                    onChange={handleInputChange}
-                    value={input}
-                    className="px-3 py-3 resize-none text-sm border-none w-full outline-none bg-transparent"
-                    placeholder="What would you like to build?"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        if (e.shiftKey) return; // Allow newline
-                        e.preventDefault();
-                        if (e.ctrlKey || !e.metaKey) {
-                          onSubmit(e);
-                        }
+            <form className="" onSubmit={onSubmit}>
+              <div className="flex">
+                <TextAreaAutoSize
+                  rows={1}
+                  maxRows={3}
+                  onChange={handleInputChange}
+                  value={input}
+                  disabled={status === "streaming" || status === "submitted"}
+                  className="px-3 py-3 resize-none text-sm border-none w-full outline-none bg-transparent"
+                  placeholder="What would you like to build?"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (e.shiftKey) return; // Allow newline
+                      e.preventDefault();
+                      if (e.ctrlKey || !e.metaKey) {
+                        onSubmit(e);
                       }
-                    }}
-                  />
-                </div>
-                <div className="h-8 flex justify-between items-center">
-                  <div className="w-fit">
-                    <Button
-                      variant={`ghost`}
-                      size={`icon`}
-                      type="button"
-                      className="h-8 shadow-none w-8"
-                    >
-                      <PaperclipIcon className="size-4" />
-                    </Button>
-                  </div>
+                    }
+                  }}
+                />
+              </div>
+              <div className="h-8 flex justify-between items-center">
+                <div className="w-fit">
                   <Button
-                    size="icon"
-                    type="submit"
-                    onClick={handleSubmit}
+                    variant={`ghost`}
+                    size={`icon`}
+                    type="button"
                     className="h-8 shadow-none w-8"
                   >
-                    {status === "ready" && <ArrowUpIcon className="size-4" />}
-                    {status === "submitted" && (
-                      <Loader2Icon className="animate-spin" />
-                    )}
-                    {status === "streaming" && (
-                      <SquareIcon className="fill-white" />
-                    )}
+                    <PaperclipIcon className="size-4" />
                   </Button>
                 </div>
-              </form>
-            </fieldset>
+                <Button
+                  size="icon"
+                  disabled={status === "submitted"}
+                  type={status !== "streaming" ? "submit" : "button"}
+                  onClick={() => {
+                    if (status !== "streaming") {
+                      handleSubmit();
+                    }
+                    if (status === "streaming") {
+                      stop();
+                    }
+                  }}
+                  className="h-8 shadow-none w-8"
+                >
+                  {status === "ready" && <ArrowUpIcon className="size-4" />}
+                  {status === "submitted" && (
+                    <Loader2Icon className="animate-spin" />
+                  )}
+                  {status === "streaming" && (
+                    <SquareIcon className="fill-white" />
+                  )}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

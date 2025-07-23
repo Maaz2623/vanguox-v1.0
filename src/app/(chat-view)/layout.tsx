@@ -2,6 +2,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { ChatViewSidebar } from "@/modules/chat/components/chat-view-sidebar";
 import { HomeView } from "@/modules/home/views/home-view";
+import { getQueryClient, trpc } from "@/trpc/server";
 import { headers } from "next/headers";
 
 export default async function ChatViewLayout({
@@ -12,6 +13,10 @@ export default async function ChatViewLayout({
   const data = await auth.api.getSession({
     headers: await headers(),
   });
+
+  const queryClient = getQueryClient();
+
+  void queryClient.prefetchQuery(trpc.chats.getChatsList.queryOptions());
 
   return (
     <>

@@ -20,6 +20,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
 
 export function ChatViewNavMain({
   items,
@@ -31,6 +33,10 @@ export function ChatViewNavMain({
   }[];
 }) {
   const router = useRouter();
+
+  const trpc = useTRPC();
+
+  const { data } = useQuery(trpc.chats.getChatsList.queryOptions());
 
   return (
     <SidebarGroup>
@@ -68,83 +74,15 @@ export function ChatViewNavMain({
                     <CollapsibleContent>
                       <ScrollArea className="h-[200px]">
                         <SidebarMenuSub>
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>{" "}
-                          <SidebarMenuSubItem key={Math.random()}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={`/`}>
-                                <span>{"Chat 1"}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
+                          {data?.map((item) => (
+                            <SidebarMenuSubItem key={Math.random()}>
+                              <SidebarMenuSubButton asChild>
+                                <a href={`/chats/${item.id}`}>
+                                  <span>{item.title}</span>
+                                </a>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
                         </SidebarMenuSub>
                       </ScrollArea>
                     </CollapsibleContent>
