@@ -94,7 +94,7 @@ export function ChatViewNavMain({
                                   asChild
                                 >
                                   <Link href={`/chats/${item.id}`}>
-                                    <span className="w-[80%] truncate">
+                                    <span className="w-[150px] truncate">
                                       {item.title}
                                     </span>
                                   </Link>

@@ -36,7 +36,7 @@ export async function POST(req: Request) {
      const summaryPrompt = [
   {
     role: "user",
-    content: `Summarize this conversation in 1 or 2 word max:\n\n${messages
+    content: `Summarize this conversation's topics in 1 or 2 word max:\n\n${messages
       .filter((m) => m.role === "user")
       .map((m) => m.content)
       .join("\n")}. Give plain text, no markdown, no styling.`,
