@@ -1,14 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useChat } from "@ai-sdk/react";
-import { motion } from "framer-motion";
 import {
   ArrowUpIcon,
   Loader2Icon,
   PaperclipIcon,
   SquareIcon,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
 import React from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 
@@ -20,8 +18,6 @@ export const MessageForm = ({ chatId }: Props) => {
   const { input, handleInputChange, handleSubmit, status } = useChat({
     id: chatId,
   });
-
-  const pathname = usePathname();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();

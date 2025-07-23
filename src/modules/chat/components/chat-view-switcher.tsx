@@ -1,13 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  AudioWaveform,
-  ChevronsUpDown,
-  Command,
-  GalleryVerticalEnd,
-  Plus,
-} from "lucide-react";
+import { ChevronsUpDown, GalleryVerticalEnd, Plus } from "lucide-react";
 
 import {
   DropdownMenu,
