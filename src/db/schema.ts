@@ -70,3 +70,14 @@ export const messagesTable = pgTable('messages', {
 });
 
 
+export const filesTable = pgTable('files', {
+  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  userId: text('user_id').references(() => user.id, {
+	onDelete: "cascade"
+  }).notNull(),
+  mimeType: text("mime_type").notNull(),
+	fileUrl: text('file_url').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+
