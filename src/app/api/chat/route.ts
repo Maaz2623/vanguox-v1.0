@@ -1,4 +1,4 @@
-import { CoreMessage, UIMessage, appendResponseMessages, generateText, smoothStream, streamText } from 'ai';
+import { CoreMessage, Message, UIMessage, appendResponseMessages, generateText, smoothStream, streamText } from 'ai';
 import {google} from '@ai-sdk/google'
 import { saveChat, updateChatSummary } from '@/actions';
 import { SYSTEM_PROMPT } from '@/prompt';
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
        await saveChat({
         chatId: id  ,
         messages: appendResponseMessages({
-          messages: lastUserMessage,
+           messages: [...lastUserMessage, ...response.messages as Message[]],
           responseMessages: response.messages
         })
       })
