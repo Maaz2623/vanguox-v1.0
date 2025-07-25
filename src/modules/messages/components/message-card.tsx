@@ -55,7 +55,7 @@ const UserMessage = ({ parts }: { parts: UIMessage["parts"] }) => {
   return (
     <AnimatePresence mode="wait" initial={true}>
       <motion.div
-        className="w-full flex justify-end text-[15px] pr-4"
+        className="w-full flex justify-end text-[16px] pr-4"
         key="user-message-card"
         initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -109,7 +109,7 @@ export const AssistantMessage = React.memo(
         <div className="w-full flex justify-start flex-col gap-y-2">
           <div
             className={cn(
-              "shadow-none text-[15px] bg-transparent dark:bg-neutral-900 w-full p-5 border-none animate-fade-in max-w-full"
+              "shadow-none text-[16px] bg-transparent dark:bg-neutral-900 w-full p-5 border-none animate-fade-in max-w-full"
             )}
           >
             <DefaultMarkdown key={messageId} id={messageId} parts={parts} />
