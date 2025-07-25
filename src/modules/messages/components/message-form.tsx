@@ -44,7 +44,7 @@ export const MessageForm = ({ chatId, initialMessages }: Props) => {
 
   return (
     <>
-      <div className="w-3/4 mx-auto flex flex-col justify-center items-end">
+      <div className="md:w-3/4 w-[95%] mx-auto flex flex-col justify-center items-end">
         <div className="" />
         <div className="w-full mx-auto rounded-md shadow-md">
           <div className="rounded-lg mx-auto dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-200 bg-white overflow-hidden p-2">

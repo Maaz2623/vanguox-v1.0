@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import React, { useState } from "react";
 import { useTheme } from "next-themes";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export const NewChatTemplateView = () => {
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ export const NewChatTemplateView = () => {
 
   return (
     <div className="h-screen">
+      <SidebarTrigger className="absolute top-3 left-3 size-10" />
       <AnimatePresence mode="wait" initial={true}>
         <motion.div
           key="new-messages-view-logo"
@@ -80,7 +82,7 @@ export const NewChatTemplateView = () => {
         }}
         animate={{ bottom: pathname === "/" ? 150 : 12, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="w-full md:w-2/3 md:px-0 px-1 mx-auto"
+        className="w-full md:w-2/3 md:px-0 px-2 mx-auto"
         style={{
           position: "absolute",
           left: 0,
