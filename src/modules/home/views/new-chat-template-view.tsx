@@ -8,9 +8,19 @@ import { usePathname, useRouter } from "next/navigation";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useTheme } from "next-themes";
 
 export const NewChatTemplateView = () => {
+  const [loading, setLoading] = useState(false);
+
+  const { theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [input, setInput] = useState("");
 
   const pathname = usePathname();
@@ -23,7 +33,10 @@ export const NewChatTemplateView = () => {
 
   const createChat = useMutation(trpc.chats.create.mutationOptions());
 
+  if (!mounted) return null; // or show a loading skeleton or fallback
+
   const onSubmit = () => {
+    setLoading(true);
     createChat.mutate(undefined, {
       onSuccess: async (data) => {
         queryClient.invalidateQueries(trpc.chats.getChatsList.queryOptions());
@@ -45,7 +58,13 @@ export const NewChatTemplateView = () => {
           transition={{ duration: 0.5 }}
           className="w-full flex flex-col -mt-12 justify-center h-full items-center text-center"
         >
-          <Image src="/logo.svg" alt="logo" width={80} height={80} priority />
+          <Image
+            src={theme === "light" ? `/logo.svg` : `/dark-logo.svg`}
+            alt="logo"
+            width={80}
+            height={80}
+            priority
+          />
           <h1 className="md:text-4xl text-xl font-semibold mt-4">Vanguox AI</h1>
           <p className="md:text-md text-sm text-pretty px-2 text-muted-foreground mt-2">
             A powerful AI system designed to enhance ideas and streamline
@@ -106,7 +125,7 @@ export const NewChatTemplateView = () => {
                     type="submit"
                     className="h-8 shadow-none w-8"
                   >
-                    {createChat.isPending ? (
+                    {loading ? (
                       <Loader2Icon className="animate-spin" />
                     ) : (
                       <ArrowUpIcon className="size-4" />

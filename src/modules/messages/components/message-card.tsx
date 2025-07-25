@@ -12,6 +12,7 @@ import { UIMessage } from "ai";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { CopyIcon, Share2Icon } from "lucide-react";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import React from "react";
 
@@ -61,7 +62,7 @@ const UserMessage = ({ parts }: { parts: UIMessage["parts"] }) => {
         exit={{ y: 10, opacity: 0 }}
         transition={{ duration: 0.2 }}
       >
-        <Card className="shadow-none w-fit max-w-[60%] py-2 px-4 rounded-md! bg-primary text-white">
+        <Card className="shadow-none w-fit max-w-[60%] py-2 px-4 rounded-md! bg-primary text-white dark:text-neutral-950">
           {Array.isArray(parts) &&
             parts.map((part, i) => {
               if (part.type === "text") {
@@ -85,13 +86,15 @@ interface AssistantMessagePros {
 
 export const AssistantMessage = React.memo(
   ({ parts, status, messageId, createdAt }: AssistantMessagePros) => {
+    const { theme } = useTheme();
+
     return (
       <div
         className={cn("flex flex-col group px-2 pb-4 max-w-[90%] text-[16px]")}
       >
         <div className="flex items-center gap-2 mb-2">
           <Image
-            src={`/logo.svg`}
+            src={theme === "light" ? `/logo.svg` : `/dark-logo.svg`}
             alt="vibe"
             width={18}
             height={18}
@@ -114,7 +117,7 @@ export const AssistantMessage = React.memo(
             {/* )} */}
             <div
               className={cn(
-                "h-7 -ml-2 gap-x-1 text-neutral-600 flex opacity-0 justify-start items-center transition-all duration-300",
+                "h-7 -ml-2 gap-x-1 text-neutral-700 dark:text-neutral-300 flex opacity-0 justify-start items-center transition-all duration-300",
                 status === "ready" && "opacity-100"
               )}
             >

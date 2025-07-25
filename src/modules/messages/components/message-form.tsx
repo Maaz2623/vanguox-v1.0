@@ -96,12 +96,15 @@ export const MessageForm = ({ chatId, initialMessages }: Props) => {
                   }}
                   className="h-8 shadow-none w-8"
                 >
-                  {status === "ready" && <ArrowUpIcon className="size-4" />}
+                  {(status === "ready" || status === "error") && (
+                    <ArrowUpIcon className="size-4" />
+                  )}
+
                   {status === "submitted" && (
                     <Loader2Icon className="animate-spin" />
                   )}
                   {status === "streaming" && (
-                    <SquareIcon className="fill-white" />
+                    <SquareIcon className="dark:fill-neutral-900 fill-white" />
                   )}
                 </Button>
               </div>

@@ -2,9 +2,10 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Message, useChat } from "@ai-sdk/react";
 import { MessageCard } from "./message-card";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { SyncLoader } from "react-spinners";
+import { useTheme } from "next-themes";
 
 interface Props {
   chatId: string;
@@ -12,6 +13,13 @@ interface Props {
 }
 
 export const MessagesList = ({ chatId, initialMessages }: Props) => {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { messages, handleInputChange, handleSubmit, status } = useChat({
     id: chatId,
     initialMessages: initialMessages,
@@ -95,9 +103,11 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
     }
   }, [messages.length, messages, status, isLastMessageUser]); // only when a new message is added
 
+  if (!mounted) return null; // or show a loading skeleton or fallback
+
   return (
     <ScrollArea className="h-full relative">
-      <div className="h-8 bg-gradient-to-t from-transparent to-white absolute top-0 left-0 w-full z-10" />
+      <div className="h-4 bg-gradient-to-t via-white/20 from-transparent dark:to-neutral-900 to-white absolute top-0 left-0 w-full z-10" />
 
       {/* <div className="h-8 bg-gradient-to-b from-transparent to-white absolute bottom-0 left-0 w-full z-10" /> */}
       <div className="w-3/4 px-2 mx-auto flex flex-col gap-y-14 pb-[20%] pt-10">
@@ -113,7 +123,12 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
         ))}
         {isLastMessageUser && (
           <div className="flex items-center justify-center size-10 mt-10 m-2">
-            <SyncLoader className="" size={6} color="#000" margin={2} />
+            <SyncLoader
+              className=""
+              size={6}
+              color={theme === "light" ? "#0000" : "#ffff"}
+              margin={2}
+            />
           </div>
         )}
         {streamingMessage && (

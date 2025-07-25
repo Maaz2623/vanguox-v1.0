@@ -19,6 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 const teams = [
   {
@@ -29,12 +30,20 @@ const teams = [
 ];
 
 export function ChatViewSwitcher() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { isMobile } = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(teams[0]);
 
   if (!activeTeam) {
     return null;
   }
+  if (!mounted) return null; // or show a loading skeleton or fallback
 
   return (
     <SidebarMenu>
@@ -47,7 +56,7 @@ export function ChatViewSwitcher() {
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                 <Image
-                  src={`/logo.svg`}
+                  src={theme === "light" ? `/logo.svg` : `/dark-logo.svg`}
                   width={200}
                   height={200}
                   alt="logo"

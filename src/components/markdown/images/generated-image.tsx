@@ -51,7 +51,7 @@ export const GeneratedImage = ({ base64, mimeType, fileUrl }: Props) => {
           onClick={handleDownload}
           className="absolute z-50 text-primary top-2 right-2 bg-white/80! hover:bg-white/40 hover:text-primary! cursor-pointer rounded-full"
         >
-          <DownloadIcon className="size-4" />
+          <DownloadIcon className="size-4 dark:text-neutral-900" />
         </Button>
       )}
 
