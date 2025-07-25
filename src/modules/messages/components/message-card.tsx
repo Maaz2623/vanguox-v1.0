@@ -98,11 +98,11 @@ export const AssistantMessage = React.memo(
           <Image
             src={theme === "light" ? `/logo.svg` : `/dark-logo.svg`}
             alt="vibe"
-            width={18}
-            height={18}
+            width={15}
+            height={15}
             className="shrink-0"
           />
-          <span className="text-sm font-medium">Vanguox</span>
+          <span className="text-xs md:text-sm font-medium">Vanguox</span>
           <span className="text-xs text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 font-medium">
             {createdAt && format(new Date(createdAt), "HH:mm 'on' MM dd, yyyy")}
           </span>

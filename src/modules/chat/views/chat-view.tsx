@@ -3,7 +3,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { MessageForm } from "@/modules/messages/components/message-form";
 import { MessagesList } from "@/modules/messages/components/messages-list";
 import { Message } from "ai";
-import { MessageCirclePlusIcon } from "lucide-react";
+import { IconMessageCirclePlus } from "@tabler/icons-react";
 import Link from "next/link";
 
 interface Props {
@@ -23,7 +23,7 @@ export const ChatView = ({ chatId, initialMessages }: Props) => {
           size={`icon`}
         >
           <Link href={`/`}>
-            <MessageCirclePlusIcon />
+            <IconMessageCirclePlus />
           </Link>
         </Button>
       </div>
