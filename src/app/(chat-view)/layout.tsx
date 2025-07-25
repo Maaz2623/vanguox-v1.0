@@ -24,7 +24,7 @@ export default async function ChatViewLayout({
         <HomeView />
       ) : (
         <SidebarProvider
-          className="dark:bg-neutral-900 bg-neutral-100 h-screen"
+          className="dark:bg-neutral-900 bg-white! h-screen"
           // style={
           //   {
           //     "--sidebar-width": "calc(var(--spacing) * 72)",

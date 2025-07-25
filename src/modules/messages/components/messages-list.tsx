@@ -107,10 +107,10 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
 
   return (
     <ScrollArea className="h-full relative">
-      <div className="h-4 bg-gradient-to-t via-white/20 dark:via-neutral-900/20 from-transparent dark:to-neutral-900 to-white absolute top-0 left-0 w-full z-10" />
+      <div className="h-6 bg-gradient-to-t via-white/20 dark:via-neutral-900/20 from-transparent dark:to-neutral-900 to-white absolute top-0 left-0 w-full z-10" />
 
       {/* <div className="h-8 bg-gradient-to-b from-transparent to-white absolute bottom-0 left-0 w-full z-10" /> */}
-      <div className="w-3/4 px-2 mx-auto flex flex-col gap-y-14 pb-[20%] pt-10">
+      <div className="md:w-3/4 w-full px-2 mx-auto flex flex-col gap-y-14 pb-[20%] pt-10">
         {stableMessages.map((message) => (
           <MessageCard
             status={status}
