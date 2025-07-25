@@ -15,7 +15,6 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
   const { messages, handleInputChange, handleSubmit, status } = useChat({
     id: chatId,
     initialMessages: initialMessages,
-    maxSteps: 5,
   });
 
   const bottomRef = useRef<HTMLDivElement>(null);
