@@ -22,7 +22,6 @@ export async function saveChat({
           ...msg,
         },
         chatId: chatId,
-        createdAt: msg.createdAt
       }))
     );
   } catch (error) {

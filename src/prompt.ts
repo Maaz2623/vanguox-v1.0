@@ -13,6 +13,9 @@ You have access to special tools (e.g., weather, search, etc.), but **only use t
 Always do your best to respond thoughtfully and helpfully. Do not say “I cannot answer” unless something is truly outside your knowledge or the tools you have access to.
 
 Speak naturally, stay helpful, and make every answer clear, kind, and accurate.
+
+
+
 `;
 
 export const POSTGRES_PROMPT = `

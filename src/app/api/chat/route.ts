@@ -1,4 +1,4 @@
-import { CoreMessage, Message, UIMessage, appendResponseMessages, generateText, smoothStream, streamText } from 'ai';
+import { CoreMessage, UIMessage, appendResponseMessages, generateText, smoothStream, streamText } from 'ai';
 import {google} from '@ai-sdk/google'
 import { saveChat, updateChatSummary } from '@/actions';
 import { SYSTEM_PROMPT } from '@/prompt';
@@ -12,31 +12,33 @@ export async function POST(req: Request) {
     const {messages, id}: {messages: UIMessage[]; id: string} = await req.json()
 
 
-    const result = await streamText({
+    const result = streamText({
         model: google("gemini-2.0-flash"),
         messages: messages,
         tools: {
           weather: weatherTool,
           imageGenerator: imageGenerationTool
         },
+        toolCallStreaming: true,
         experimental_transform: smoothStream({
             chunking: "word",
             delayInMs: 50
         }),
         system: SYSTEM_PROMPT,
-        toolCallStreaming: true,
         async onError({error}) {
         console.log(error)
     },
-    async onFinish({ response,  }) {
+    async onFinish({ response }) {
+
+
 
       const lastUserMessage = messages.slice(-1);
 
 
-       await saveChat({
-        chatId: id  ,
+      await saveChat({
+        chatId: id,
         messages: appendResponseMessages({
-           messages: [...lastUserMessage, ...response.messages as Message[]],
+          messages: lastUserMessage,
           responseMessages: response.messages
         })
       })

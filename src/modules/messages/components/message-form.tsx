@@ -21,6 +21,7 @@ export const MessageForm = ({ chatId, initialMessages }: Props) => {
   const { input, handleInputChange, handleSubmit, status, stop } = useChat({
     id: chatId,
     initialMessages: initialMessages,
+    maxSteps: 5,
   });
 
   const queryClient = useQueryClient();

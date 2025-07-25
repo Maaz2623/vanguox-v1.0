@@ -20,14 +20,22 @@ interface Props {
   parts: UIMessage["parts"];
   messageId: string;
   status: ReturnType<typeof useChat>["status"];
+  createdAt: Date | undefined;
 }
 
-export const MessageCard = ({ role, parts, messageId, status }: Props) => {
+export const MessageCard = ({
+  role,
+  parts,
+  messageId,
+  status,
+  createdAt,
+}: Props) => {
   return (
     <div className="">
       {role === "assistant" ? (
         <div className="flex justify-start items-center">
           <AssistantMessage
+            createdAt={createdAt}
             parts={parts}
             messageId={messageId}
             status={status}
@@ -72,10 +80,11 @@ interface AssistantMessagePros {
   parts: UIMessage["parts"];
   status?: ReturnType<typeof useChat>["status"];
   messageId: string;
+  createdAt: Date | undefined;
 }
 
 export const AssistantMessage = React.memo(
-  ({ parts, status, messageId }: AssistantMessagePros) => {
+  ({ parts, status, messageId, createdAt }: AssistantMessagePros) => {
     return (
       <div
         className={cn("flex flex-col group px-2 pb-4 max-w-[90%] text-[16px]")}
@@ -90,7 +99,7 @@ export const AssistantMessage = React.memo(
           />
           <span className="text-sm font-medium">Vanguox</span>
           <span className="text-xs text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 font-medium">
-            {format(Date.now(), "HH:mm 'on' MM dd, yyyy")}
+            {createdAt && format(new Date(createdAt), "HH:mm 'on' MM dd, yyyy")}
           </span>
         </div>
 

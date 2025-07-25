@@ -15,6 +15,7 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
   const { messages, handleInputChange, handleSubmit, status } = useChat({
     id: chatId,
     initialMessages: initialMessages,
+    maxSteps: 5,
   });
 
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -108,6 +109,7 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
             key={message.id}
             role={message.role}
             parts={message.parts}
+            createdAt={message.createdAt}
           />
         ))}
         {isLastMessageUser && (
@@ -118,6 +120,7 @@ export const MessagesList = ({ chatId, initialMessages }: Props) => {
         {streamingMessage && (
           <div>
             <MessageCard
+              createdAt={streamingMessage.createdAt}
               messageId={streamingMessage.id}
               status={status}
               role={streamingMessage.role}

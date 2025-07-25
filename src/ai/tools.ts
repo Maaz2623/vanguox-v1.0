@@ -11,17 +11,19 @@ export const utapi = new UTApi({
 
 
 export const weatherTool = tool({
-      description: 'Get the weather in a location',
-      parameters: z.object({
-        location: z.string().describe('The location to get the weather for'),
-      }),
-      execute: async ({ location }) => ({
-        location,
-        temperature: 72 + Math.floor(Math.random() * 21) - 10,
-      })
-    })
+  description: 'Get the weather in a location and give a 200 word summary',
+  parameters: z.object({
+    location: z.string().describe('The location to get the weather for'),
+  }),
+  execute: async ({ location }) => {
+    const result = await generateText({
+      model: google('gemini-2.0-flash'),
+      prompt: `Tell me about the weather history of ${location} in exactly 200 words.`,
+    });
 
-
+    return result.text; // <- returns full text
+  },
+});
 
 export const imageGenerationTool =  tool({
         description: "Generate an image from a prompt using Gemini.",
