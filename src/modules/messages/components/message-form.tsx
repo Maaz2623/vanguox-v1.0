@@ -32,8 +32,6 @@ export const MessageForm = ({ chatId, initialMessages }: Props) => {
     handleSubmit();
   };
 
-  console.log(initialMessages.length);
-
   useEffect(() => {
     if (initialMessages.length < 4) {
       queryClient.invalidateQueries(
@@ -55,6 +53,7 @@ export const MessageForm = ({ chatId, initialMessages }: Props) => {
                 <TextAreaAutoSize
                   rows={1}
                   maxRows={3}
+                  autoFocus={true}
                   onChange={handleInputChange}
                   value={input}
                   disabled={status === "streaming" || status === "submitted"}

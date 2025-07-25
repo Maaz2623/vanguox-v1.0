@@ -89,51 +89,53 @@ export const NewChatTemplateView = () => {
       >
         <div className="w-full mx-auto rounded-md shadow-md">
           <div className="rounded-lg w-full mx-auto dark:bg-neutral-800 border dark:border-neutral-700 border-neutral-200 overflow-hidden p-2">
-            <fieldset disabled={createChat.isPending}>
-              <form className="" onSubmit={onSubmit}>
-                <div className="flex">
-                  <TextAreaAutoSize
-                    rows={1}
-                    maxRows={3}
-                    onChange={(e) => setInput(e.target.value)}
-                    className="px-3 py-3 resize-none text-sm border-none w-full outline-none bg-transparent"
-                    placeholder="What's on your mind today?"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        if (e.shiftKey) return; // Allow newline
-                        e.preventDefault();
-                        if (e.ctrlKey || !e.metaKey) {
-                          onSubmit();
-                        }
+            <form className="" onSubmit={onSubmit}>
+              <div className="flex">
+                <TextAreaAutoSize
+                  rows={1}
+                  maxRows={3}
+                  autoFocus={true}
+                  disabled={loading}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="px-3 py-3 resize-none text-sm border-none w-full outline-none bg-transparent"
+                  placeholder="What's on your mind today?"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (e.shiftKey) return; // Allow newline
+                      e.preventDefault();
+                      if (e.ctrlKey || !e.metaKey) {
+                        onSubmit();
                       }
-                    }}
-                  />
-                </div>
-                <div className="h-8 flex justify-between items-center">
-                  <div className="w-fit">
-                    <Button
-                      variant={`ghost`}
-                      size={`icon`}
-                      type="button"
-                      className="h-8 shadow-none w-8"
-                    >
-                      <PaperclipIcon className="size-4" />
-                    </Button>
-                  </div>
+                    }
+                  }}
+                />
+              </div>
+              <div className="h-8 flex justify-between items-center">
+                <div className="w-fit">
                   <Button
-                    size="icon"
-                    type="submit"
+                    variant={`ghost`}
+                    size={`icon`}
+                    type="button"
+                    disabled={loading}
                     className="h-8 shadow-none w-8"
                   >
-                    {loading ? (
-                      <Loader2Icon className="animate-spin" />
-                    ) : (
-                      <ArrowUpIcon className="size-4" />
-                    )}
+                    <PaperclipIcon className="size-4" />
                   </Button>
                 </div>
-              </form>
-            </fieldset>
+                <Button
+                  size="icon"
+                  type="submit"
+                  disabled={loading}
+                  className="h-8 shadow-none w-8"
+                >
+                  {loading ? (
+                    <Loader2Icon className="animate-spin size-4" />
+                  ) : (
+                    <ArrowUpIcon className="size-4" />
+                  )}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </motion.div>
