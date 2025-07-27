@@ -1,5 +1,4 @@
-import { Message } from 'ai';
-import { boolean, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 
 
@@ -48,36 +47,3 @@ export const verification = pgTable("verification", {
  createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
  updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 				});
-
-export const chatsTable = pgTable("chats", {
-	id: uuid('id').primaryKey().notNull().defaultRandom(),
-	title: text("title").notNull().default("Untitled"),
-	userId: text('user_id').references(() => user.id, {
-		onDelete: "cascade"
-	}).notNull(),
-	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
-	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
-})
-
-
-export const messagesTable = pgTable('messages', {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
-  chatId: uuid('chat_id').references(() => chatsTable.id, {
-	onDelete: "cascade"
-  }).notNull(),
-  message: jsonb('message').$type<Message>(),
-  createdAt: timestamp('created_at').defaultNow(),
-});
-
-
-export const filesTable = pgTable('files', {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
-  userId: text('user_id').references(() => user.id, {
-	onDelete: "cascade"
-  }).notNull(),
-  mimeType: text("mime_type").notNull(),
-	fileUrl: text('file_url').notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-})
-
-
