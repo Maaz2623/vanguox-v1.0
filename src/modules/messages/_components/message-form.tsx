@@ -3,11 +3,22 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, PlusCircleIcon } from "lucide-react";
 import { useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
+import { useChat } from "@ai-sdk/react";
 
-export const MessageForm = () => {
+interface Props {
+  chatId: string;
+  sendMessage: ReturnType<typeof useChat>["sendMessage"];
+  status: ReturnType<typeof useChat>["status"];
+}
+
+export const MessageForm = ({ sendMessage }: Props) => {
   const [prompt, setPrompt] = useState("");
 
-  const onSubmit = (e: React.FormEvent) => {};
+  const onSubmit = () => {
+    sendMessage({
+      text: prompt,
+    });
+  };
 
   return (
     <div className="p-2 w-3/4 rounded-lg border bg-stone-50 border-neutral-300 mx-auto flex items-center">
@@ -27,12 +38,12 @@ export const MessageForm = () => {
             if (e.shiftKey) return; // Allow newline
             e.preventDefault();
             if (e.ctrlKey || !e.metaKey) {
-              onSubmit(e);
+              onSubmit();
             }
           }
         }}
       />
-      <Button size={`icon`}>
+      <Button size={`icon`} onClick={onSubmit}>
         <ArrowUpIcon />
       </Button>
     </div>

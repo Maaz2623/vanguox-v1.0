@@ -10,7 +10,7 @@ interface Props {
 const ChatIdPage = async ({ params }: Props) => {
   const { chatId } = await params;
 
-  return <ChatView chatId={chatId} />;
+  return <ChatView chatId={chatId.toString()} />;
 };
 
 export default ChatIdPage;
