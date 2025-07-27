@@ -1,0 +1,40 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { ArrowUpIcon, PlusCircleIcon } from "lucide-react";
+import { useState } from "react";
+import TextAreaAutoSize from "react-textarea-autosize";
+
+export const MessageForm = () => {
+  const [prompt, setPrompt] = useState("");
+
+  const onSubmit = (e: React.FormEvent) => {};
+
+  return (
+    <div className="p-2 w-3/4 rounded-lg border bg-stone-50 border-neutral-300 mx-auto flex items-center">
+      <Button className="" variant={`ghost`} size={`icon`}>
+        <PlusCircleIcon />
+      </Button>
+      <TextAreaAutoSize
+        rows={1}
+        maxRows={3}
+        autoFocus={true}
+        onChange={(e) => setPrompt(e.target.value)}
+        value={prompt}
+        className="px-3 py-3 resize-none text-sm border-none w-full outline-none"
+        placeholder="Ask me anything..."
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            if (e.shiftKey) return; // Allow newline
+            e.preventDefault();
+            if (e.ctrlKey || !e.metaKey) {
+              onSubmit(e);
+            }
+          }
+        }}
+      />
+      <Button size={`icon`}>
+        <ArrowUpIcon />
+      </Button>
+    </div>
+  );
+};
