@@ -21,12 +21,12 @@ export default async function ChatViewLayout({
       ) : (
         <SidebarProvider
           className="dark:bg-neutral-900 bg-neutral-100 h-screen"
-          // style={
-          //   {
-          //     "--sidebar-width": "calc(var(--spacing) * 72)",
-          //     "--header-height": "calc(var(--spacing) * 12)",
-          //   } as React.CSSProperties
-          // }
+          style={
+            {
+              // "--sidebar-width": "calc(var(--spacing) * 72)",
+              "--header-height": "calc(var(--spacing) * 12)",
+            } as React.CSSProperties
+          }
         >
           <ChatViewSidebar
             auth={true}

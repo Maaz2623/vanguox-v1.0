@@ -6,38 +6,37 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { useChat } from "@ai-sdk/react";
+import { UIMessage, useChat } from "@ai-sdk/react";
 import { format } from "date-fns";
 import { CopyIcon, Share2Icon } from "lucide-react";
 import Image from "next/image";
 
 interface Props {
-  role: ReturnType<typeof useChat>["messages"][number]["role"];
-  parts: ReturnType<typeof useChat>["messages"][number]["parts"];
+  message: UIMessage;
   status: ReturnType<typeof useChat>["status"];
 }
 
-export const MessageCard = ({ role, parts, status }: Props) => {
+export const MessageCard = ({ message, status }: Props) => {
   return (
     <div>
-      {role === "assistant" ? (
+      {message.role === "assistant" ? (
         <div className="flex justify-start items-center">
-          <AssistantMessageCard role={role} parts={parts} status={status} />
+          <AssistantMessageCard message={message} status={status} />
         </div>
       ) : (
         <div className="flex justify-end items-center">
-          <UserMessageCard role={role} parts={parts} status={status} />
+          <UserMessageCard message={message} status={status} />
         </div>
       )}
     </div>
   );
 };
 
-const UserMessageCard = ({ parts }: Props) => {
+const UserMessageCard = ({ message }: Props) => {
   return (
     <div className="w-full flex justify-end text-[14px] md:text-[16px]">
       <Card className="shadow-none animate-in duration-300 w-fit max-w-[60%] py-2 px-4 rounded-md! bg-neutral-800 text-white dark:text-neutral-950">
-        {parts.map((part, i) => (
+        {message.parts.map((part, i) => (
           <span className="" key={i}>
             {part.type === "text" && part.text}
           </span>
@@ -47,7 +46,7 @@ const UserMessageCard = ({ parts }: Props) => {
   );
 };
 
-const AssistantMessageCard = ({ parts, status }: Props) => {
+const AssistantMessageCard = ({ message, status }: Props) => {
   return (
     <div
       className={cn(
@@ -75,13 +74,14 @@ const AssistantMessageCard = ({ parts, status }: Props) => {
             "shadow-none text-[14px] md:text-[16px]  bg-transparent dark:bg-neutral-900 w-full p-5 border-none animate-fade-in max-w-full"
           )}
         >
-          {parts.map((part, index) =>
+          {message.parts.map((part, index) =>
             part.type === "text" ? <span key={index}>{part.text}</span> : null
           )}
           <div
             className={cn(
-              "h-7 -ml-1.5 gap-x-1 mt-4 text-neutral-700 dark:text-neutral-300 flex opacity-0 justify-start items-center transition-all duration-300",
-              status === "ready" && "opacity-100"
+              "h-7 -ml-1.5 gap-x-1 mt-4 text-neutral-700 dark:text-neutral-300 flex opacity-0 justify-start items-center transition-opacity duration-500",
+              status === "ready" &&
+                "opacity-100 transition-opacity duration-500"
             )}
           >
             <Tooltip>

@@ -95,23 +95,14 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
         <ScrollArea className="w-full h-[555px] ">
           <div className="w-[70%] mx-auto h-full pb-[50vh] pt-20 flex flex-col gap-y-10">
             {stableMessages.map((msg) => (
-              <MessageCard
-                status={status}
-                role={msg.role}
-                parts={msg.parts}
-                key={msg.id}
-              />
+              <MessageCard status={status} message={msg} key={msg.id} />
             ))}
             {isLastMessageUser && (
               <SyncLoader color="#0000" size={6} margin={2} />
             )}
             {streamingMessage && (
               <div>
-                <MessageCard
-                  status={status}
-                  role={streamingMessage.role}
-                  parts={streamingMessage.parts}
-                />
+                <MessageCard status={status} message={streamingMessage} />
               </div>
             )}
             <div ref={bottomRef} />
