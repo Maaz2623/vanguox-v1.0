@@ -1,9 +1,16 @@
 "use server"
 
 import { db } from "@/db"
-import { messagesTabe } from "@/db/schema"
+import { chatsTable, messagesTabe } from "@/db/schema"
 import { UIMessage } from "ai"
 import { eq } from "drizzle-orm"
+
+export async function createChat() {
+    const [newChat] = await db.insert(chatsTable).values({}).returning()
+
+
+    return newChat
+}
 
 export async function loadChat(id: string) {
 
@@ -27,6 +34,7 @@ export async function saveChat({
   messages: UIMessage[];
 }) {
     try {
+
         
         const newMessages = await db.insert(messagesTabe).values(
             messages.map((msg) => ({

@@ -10,8 +10,8 @@ export async function POST(req: Request) {
 
   const latestUserMessage = messages[messages.length - 1]; 
 
+
   try {
-    
     const result = streamText({
       model: google("gemini-2.0-flash"),
       messages: convertToModelMessages(messages),

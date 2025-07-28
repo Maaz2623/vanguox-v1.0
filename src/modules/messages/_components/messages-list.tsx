@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { DefaultChatTransport } from "ai";
+import { useSearchParams } from "next/navigation";
 
 interface Props {
   chatId: string;
@@ -22,6 +23,10 @@ interface Props {
 }
 
 export const MessagesList = ({ initialMessages, chatId }: Props) => {
+  const searchParams = useSearchParams();
+
+  const initialMessage = searchParams.get("message");
+
   const { messages, status, sendMessage } = useChat({
     id: chatId,
     messages: initialMessages,
@@ -29,6 +34,20 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
       api: "/api/chat",
     }),
   });
+
+  const hasSentInitialMessage = useRef(false);
+
+  useEffect(() => {
+    if (!initialMessage || hasSentInitialMessage.current) return;
+
+    sendMessage({ text: initialMessage });
+    hasSentInitialMessage.current = true;
+
+    // Remove the query param from the URL
+    const url = new URL(window.location.href);
+    url.searchParams.delete("message");
+    window.history.replaceState({}, "", url.toString());
+  }, [initialMessage, sendMessage]);
 
   const [prompt, setPrompt] = useState("");
 
@@ -74,7 +93,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
           <SiteHeader />
         </div>
         <ScrollArea className="w-full h-[555px] ">
-          <div className="w-[70%] mx-auto h-full pb-[40vh] pt-20 flex flex-col gap-y-10">
+          <div className="w-[70%] mx-auto h-full pb-[50vh] pt-20 flex flex-col gap-y-10">
             {stableMessages.map((msg) => (
               <MessageCard
                 status={status}
@@ -95,6 +114,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
                 />
               </div>
             )}
+            <div ref={bottomRef} />
           </div>
         </ScrollArea>
         <div className="p-2 w-3/4 rounded-lg border bg-stone-50 border-neutral-300 mx-auto flex items-center">

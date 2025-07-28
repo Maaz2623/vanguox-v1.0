@@ -51,13 +51,15 @@ export const verification = pgTable("verification", {
 
 
 export const chatsTable = pgTable("chats", {
-	id: uuid("id").primaryKey().defaultRandom(),
+	id: uuid("id").primaryKey().defaultRandom().notNull(),
 	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
- updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
+ 	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 })
 
 export const messagesTabe = pgTable("messages", {
-	id: uuid("id").defaultRandom().primaryKey(),
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
 	message: jsonb("message").$type<UIMessage>().notNull(),
-	chatId: uuid("chat_id").references(() => chatsTable.id).notNull()
+	chatId: text("chat_id").notNull(),
+	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
+ 	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 })
