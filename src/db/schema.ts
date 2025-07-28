@@ -1,4 +1,5 @@
-import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { UIMessage } from 'ai';
+import { boolean, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 
 
@@ -47,3 +48,16 @@ export const verification = pgTable("verification", {
  createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
  updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 				});
+
+
+export const chatsTable = pgTable("chats", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
+ updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
+})
+
+export const messagesTabe = pgTable("messages", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	message: jsonb("message").$type<UIMessage>().notNull(),
+	chatId: uuid("chat_id").references(() => chatsTable.id).notNull()
+})

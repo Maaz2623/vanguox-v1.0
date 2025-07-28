@@ -1,12 +1,19 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, UIMessage } from "ai";
 import { useState } from "react";
 
-export default function Page() {
+export const Chat = ({
+  testId,
+  initialMessages,
+}: {
+  testId: string;
+  initialMessages: UIMessage[];
+}) => {
   const { messages, sendMessage, status } = useChat({
-    id: "123",
+    id: testId,
+    messages: initialMessages,
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
@@ -45,4 +52,4 @@ export default function Page() {
       </form>
     </>
   );
-}
+};

@@ -1,11 +1,14 @@
-import { streamText, UIMessage, convertToModelMessages, smoothStream } from 'ai';
+import { streamText, UIMessage, convertToModelMessages, smoothStream, createIdGenerator } from 'ai';
 import { google } from '@ai-sdk/google'
+import { saveChat } from '@/ai/functions';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  const { messages, id }: { messages: UIMessage[], id: string } = await req.json();
+
+  const latestUserMessage = messages[messages.length - 1]; 
 
   try {
     
@@ -19,9 +22,22 @@ export async function POST(req: Request) {
     });
     
     
-    console.log(result.text)
-    
-    return result.toUIMessageStreamResponse();
+    return result.toUIMessageStreamResponse({
+       originalMessages: messages,
+        generateMessageId: createIdGenerator({
+      prefix: 'msg',
+      size: 16,
+    }),
+      onFinish: async ({messages: updatedMessages}) => {
+  const assistantMessage = updatedMessages[updatedMessages.length - 1];
+
+
+        await saveChat({
+          chatId: id,
+          messages: [latestUserMessage, assistantMessage]
+        })
+      }
+    });
   } catch (error) {
     console.log(error)
   }

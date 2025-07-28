@@ -1,23 +1,33 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ArrowUpIcon, PlusCircleIcon } from "lucide-react";
+import {
+  ArrowUpIcon,
+  Loader2Icon,
+  PlusCircleIcon,
+  SquareIcon,
+} from "lucide-react";
 import { useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
-import { useChat } from "@ai-sdk/react";
+import { UIMessage, useChat } from "@ai-sdk/react";
 
 interface Props {
   chatId: string;
-  sendMessage: ReturnType<typeof useChat>["sendMessage"];
-  status: ReturnType<typeof useChat>["status"];
+  initialMessages: UIMessage[];
 }
 
-export const MessageForm = ({ sendMessage }: Props) => {
+export const MessageForm = ({ chatId, initialMessages }: Props) => {
+  const { sendMessage, status } = useChat({
+    id: chatId,
+    messages: initialMessages,
+  });
+
   const [prompt, setPrompt] = useState("");
 
   const onSubmit = () => {
     sendMessage({
       text: prompt,
     });
+    setPrompt("");
   };
 
   return (
@@ -43,8 +53,14 @@ export const MessageForm = ({ sendMessage }: Props) => {
           }
         }}
       />
-      <Button size={`icon`} onClick={onSubmit}>
-        <ArrowUpIcon />
+      <Button
+        size={`icon`}
+        onClick={onSubmit}
+        disabled={status === "submitted"}
+      >
+        {status === "ready" && <ArrowUpIcon />}
+        {status === "submitted" && <Loader2Icon className="animate-spin" />}
+        {status === "streaming" && <SquareIcon className=" fill-white" />}
       </Button>
     </div>
   );

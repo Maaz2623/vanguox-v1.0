@@ -14,18 +14,19 @@ import Image from "next/image";
 interface Props {
   role: ReturnType<typeof useChat>["messages"][number]["role"];
   parts: ReturnType<typeof useChat>["messages"][number]["parts"];
+  status: ReturnType<typeof useChat>["status"];
 }
 
-export const MessageCard = ({ role, parts }: Props) => {
+export const MessageCard = ({ role, parts, status }: Props) => {
   return (
     <div>
       {role === "assistant" ? (
         <div className="flex justify-start items-center">
-          <AssistantMessageCard role={role} parts={parts} />
+          <AssistantMessageCard role={role} parts={parts} status={status} />
         </div>
       ) : (
         <div className="flex justify-end items-center">
-          <UserMessageCard role={role} parts={parts} />
+          <UserMessageCard role={role} parts={parts} status={status} />
         </div>
       )}
     </div>
@@ -35,16 +36,18 @@ export const MessageCard = ({ role, parts }: Props) => {
 const UserMessageCard = ({ parts }: Props) => {
   return (
     <div className="w-full flex justify-end text-[14px] md:text-[16px]">
-      <Card className="shadow-none w-fit max-w-[60%] py-2 px-4 rounded-md! bg-neutral-800 text-white dark:text-neutral-950">
-        {parts[0].type}
+      <Card className="shadow-none animate-in duration-300 w-fit max-w-[60%] py-2 px-4 rounded-md! bg-neutral-800 text-white dark:text-neutral-950">
+        {parts.map((part, i) => (
+          <span className="" key={i}>
+            {part.type === "text" && part.text}
+          </span>
+        ))}
       </Card>
     </div>
   );
 };
 
-const AssistantMessageCard = ({ parts }: Props) => {
-  const status = "success" || "streaming";
-
+const AssistantMessageCard = ({ parts, status }: Props) => {
   return (
     <div
       className={cn(
@@ -78,7 +81,7 @@ const AssistantMessageCard = ({ parts }: Props) => {
           <div
             className={cn(
               "h-7 -ml-1.5 gap-x-1 mt-4 text-neutral-700 dark:text-neutral-300 flex opacity-0 justify-start items-center transition-all duration-300",
-              status === "success" && "opacity-100"
+              status === "ready" && "opacity-100"
             )}
           >
             <Tooltip>

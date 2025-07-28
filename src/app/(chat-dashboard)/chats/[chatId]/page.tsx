@@ -1,3 +1,4 @@
+import { loadChat } from "@/ai/functions";
 import { ChatView } from "@/modules/chat/views/chat-view";
 import React from "react";
 
@@ -10,7 +11,9 @@ interface Props {
 const ChatIdPage = async ({ params }: Props) => {
   const { chatId } = await params;
 
-  return <ChatView chatId={chatId.toString()} />;
+  const messages = await loadChat(chatId);
+
+  return <ChatView initialMessages={messages} chatId={chatId.toString()} />;
 };
 
 export default ChatIdPage;
