@@ -1,5 +1,4 @@
 "use client";
-import { SiteHeader } from "@/app/(chat-dashboard)/_components/site-header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCard } from "./message-card";
 import { UIMessage, useChat } from "@ai-sdk/react";
@@ -16,6 +15,7 @@ import { useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { DefaultChatTransport } from "ai";
 import { useSearchParams } from "next/navigation";
+import { ChatViewSiteHeader } from "@/modules/chat/components/chat-view-site-header";
 
 interface Props {
   chatId: string;
@@ -95,7 +95,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
     <>
       <div className="w-full h-full overflow-hidden relative">
         <div className="absolute top-0 left-0 w-full bg-white z-50">
-          <SiteHeader />
+          <ChatViewSiteHeader />
         </div>
         <ScrollArea className="w-full h-[555px] ">
           <div className="w-[70%] mx-auto h-full pb-[40vh] pt-20 flex flex-col gap-y-10">
