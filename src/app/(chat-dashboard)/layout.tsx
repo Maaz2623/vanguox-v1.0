@@ -1,5 +1,4 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "./_components/app-sidebar";
 import { ChatViewSidebar } from "@/modules/chat/components/chat-view-sidebar";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";

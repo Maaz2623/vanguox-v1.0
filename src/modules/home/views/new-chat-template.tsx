@@ -4,18 +4,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import TextAreaAutoSize from "react-textarea-autosize";
-import {
-  ArrowUpIcon,
-  Loader2Icon,
-  PlusCircleIcon,
-  SquareIcon,
-} from "lucide-react";
+import { ArrowUpIcon, Loader2Icon, PlusCircleIcon } from "lucide-react";
 import { startTransition, useState } from "react";
-import { createChat } from "@/ai/functions";
 import { useRouter } from "next/navigation";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 
 export const NewChatTemplateView = () => {
   const [loading, setLoading] = useState(false);
+
+  const createChat = useMutation(api.chats.createConvexChat);
 
   const router = useRouter();
 
@@ -30,7 +28,7 @@ export const NewChatTemplateView = () => {
     startTransition(async () => {
       const data = await createChat();
       const params = new URLSearchParams({ message: currentPrompt });
-      router.push(`/chats/${data.id}?${params.toString()}`);
+      router.push(`/chats/${data}?${params.toString()}`);
     });
   };
 

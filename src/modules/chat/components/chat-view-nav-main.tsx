@@ -8,8 +8,16 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
 } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
+import { ChevronRight } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function ChatViewNavMain({
   items,
@@ -39,12 +47,60 @@ export function ChatViewNavMain({
         </SidebarMenu>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            <div key={item.url}>
+              {item.title === "History" ? (
+                <Collapsible
+                  key={item.title}
+                  asChild
+                  defaultOpen={false}
+                  className="group/collapsible"
+                >
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton tooltip={item.title}>
+                        {item.icon && <item.icon />}
+                        <span>{item.title}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <ScrollArea className="h-[200px]">
+                        <SidebarMenuSub>
+                          {/* {data?.map((item) => {
+                            const isActive = pathname === `/chats/${item.id}`;
+                            return (
+                              <SidebarMenuSubItem key={Math.random()}>
+                                <SidebarMenuSubButton
+                                  className={cn(
+                                    "",
+                                    isActive && "bg-neutral-500/10"
+                                  )}
+                                  asChild
+                                >
+                                  <Link href={`/chats/${item.id}`}>
+                                    <span className="w-[150px] truncate">
+                                      {item.title}
+                                    </span>
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            );
+                          })} */}
+                          hi
+                        </SidebarMenuSub>
+                      </ScrollArea>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              ) : (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton tooltip={item.title}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+            </div>
           ))}
         </SidebarMenu>
       </SidebarGroupContent>

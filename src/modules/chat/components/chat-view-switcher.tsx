@@ -1,13 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  AudioWaveform,
-  ChevronsUpDown,
-  Command,
-  GalleryVerticalEnd,
-  Plus,
-} from "lucide-react";
+import { ChevronsUpDown, GalleryVerticalEnd, Plus } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -24,32 +18,32 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 const teams = [
   {
-    name: "Acme Inc",
+    name: "Vanguox",
     logo: GalleryVerticalEnd,
-    plan: "Enterprise",
-  },
-  {
-    name: "Acme Corp.",
-    logo: AudioWaveform,
-    plan: "Startup",
-  },
-  {
-    name: "Evil Corp.",
-    logo: Command,
-    plan: "Free",
+    plan: "Assistant",
   },
 ];
 
 export function ChatViewSwitcher() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { isMobile } = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(teams[0]);
 
   if (!activeTeam) {
     return null;
   }
+  if (!mounted) return null; // or show a loading skeleton or fallback
 
   return (
     <SidebarMenu>
@@ -60,8 +54,14 @@ export function ChatViewSwitcher() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeTeam.logo className="size-4" />
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+                <Image
+                  src={`/logo.svg`}
+                  width={200}
+                  height={200}
+                  alt="logo"
+                  className="size-5 shrink-0"
+                />{" "}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{activeTeam.name}</span>
@@ -86,7 +86,13 @@ export function ChatViewSwitcher() {
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-md border">
-                  <team.logo className="size-3.5 shrink-0" />
+                  <Image
+                    src={`/logo.svg`}
+                    width={50}
+                    height={50}
+                    alt="logo"
+                    className="size-3.5 shrink-0"
+                  />
                 </div>
                 {team.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
