@@ -5,6 +5,7 @@ import { v } from "convex/values";
 
 export default defineSchema({
     chats: defineTable({
-        title: v.string()
-    })
+        title: v.string(),
+        userId: v.string()
+    }).index("by_userId", ["userId"])
 })

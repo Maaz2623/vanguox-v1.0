@@ -9,8 +9,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import {
   Collapsible,
@@ -18,6 +20,10 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function ChatViewNavMain({
   items,
@@ -29,6 +35,12 @@ export function ChatViewNavMain({
   }[];
 }) {
   const router = useRouter();
+
+  const chats = useQuery(api.chats.getChats, {
+    userId: "wGE4sjNCrFsXRRKhcqETKwNi4Isdv5G9",
+  });
+
+  const pathname = usePathname();
 
   return (
     <SidebarGroup>
@@ -66,8 +78,8 @@ export function ChatViewNavMain({
                     <CollapsibleContent>
                       <ScrollArea className="h-[200px]">
                         <SidebarMenuSub>
-                          {/* {data?.map((item) => {
-                            const isActive = pathname === `/chats/${item.id}`;
+                          {chats?.map((item) => {
+                            const isActive = pathname === `/chats/${item._id}`;
                             return (
                               <SidebarMenuSubItem key={Math.random()}>
                                 <SidebarMenuSubButton
@@ -77,7 +89,7 @@ export function ChatViewNavMain({
                                   )}
                                   asChild
                                 >
-                                  <Link href={`/chats/${item.id}`}>
+                                  <Link href={`/chats/${item._id}`}>
                                     <span className="w-[150px] truncate">
                                       {item.title}
                                     </span>
@@ -85,8 +97,7 @@ export function ChatViewNavMain({
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             );
-                          })} */}
-                          hi
+                          })}
                         </SidebarMenuSub>
                       </ScrollArea>
                     </CollapsibleContent>

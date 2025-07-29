@@ -6,6 +6,7 @@ import { UIMessage } from "ai"
 import { eq } from "drizzle-orm"
 
 
+
 export async function loadChat(id: string) {
 
     const messages = await db.select().from(messagesTabe).where(eq(messagesTabe.chatId, id))

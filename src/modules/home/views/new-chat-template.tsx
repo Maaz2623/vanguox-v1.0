@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 
-export const NewChatTemplateView = () => {
+export const NewChatTemplateView = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(false);
 
   const createChat = useMutation(api.chats.createConvexChat);
@@ -25,7 +25,9 @@ export const NewChatTemplateView = () => {
 
     // Create the chat entry in the DB
     startTransition(async () => {
-      const data = await createChat();
+      const data = await createChat({
+        userId: userId,
+      });
       const params = new URLSearchParams({ message: currentPrompt });
       router.push(`/chats/${data}?${params.toString()}`);
     });
