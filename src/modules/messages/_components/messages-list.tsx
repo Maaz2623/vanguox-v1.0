@@ -27,7 +27,9 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
 
   const initialMessage = searchParams.get("message");
 
-  const { messages, status, sendMessage } = useChat({
+  const [buttonType, setButtonType] = useState<"arrow" | "square">("arrow");
+
+  const { messages, status, sendMessage, stop } = useChat({
     id: chatId,
     messages: initialMessages,
     transport: new DefaultChatTransport({
@@ -52,9 +54,14 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
   const [prompt, setPrompt] = useState("");
 
   const onSubmit = () => {
-    sendMessage({
-      text: prompt,
-    });
+    if (status === "streaming") {
+      stop();
+      return;
+    }
+
+    if (!prompt.trim()) return; // Avoid sending empty messages
+
+    sendMessage({ text: prompt });
     setPrompt("");
   };
 
@@ -93,7 +100,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
           <SiteHeader />
         </div>
         <ScrollArea className="w-full h-[555px] ">
-          <div className="w-[70%] mx-auto h-full pb-[50vh] pt-20 flex flex-col gap-y-10">
+          <div className="w-[70%] mx-auto h-full pb-[40vh] pt-20 flex flex-col gap-y-10">
             {stableMessages.map((msg) => (
               <MessageCard status={status} message={msg} key={msg.id} />
             ))}

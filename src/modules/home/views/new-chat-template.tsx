@@ -15,13 +15,14 @@ import { createChat } from "@/ai/functions";
 import { useRouter } from "next/navigation";
 
 export const NewChatTemplateView = () => {
-  const { status } = useChat();
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const [prompt, setPrompt] = useState("");
 
   const onSubmit = async () => {
+    setLoading(true);
     const currentPrompt = prompt; // Save the prompt
     setPrompt("");
 
@@ -58,6 +59,7 @@ export const NewChatTemplateView = () => {
         </Button>
         <TextAreaAutoSize
           rows={1}
+          disabled={loading}
           maxRows={3}
           autoFocus={true}
           onChange={(e) => setPrompt(e.target.value)}
@@ -74,14 +76,9 @@ export const NewChatTemplateView = () => {
             }
           }}
         />
-        <Button
-          size={`icon`}
-          onClick={onSubmit}
-          disabled={status === "submitted"}
-        >
-          {status === "ready" && <ArrowUpIcon />}
-          {status === "submitted" && <Loader2Icon className="animate-spin" />}
-          {status === "streaming" && <SquareIcon className=" fill-white" />}
+        <Button size={`icon`} onClick={onSubmit} disabled={loading}>
+          {!loading && <ArrowUpIcon />}
+          {loading && <Loader2Icon className="animate-spin" />}
         </Button>
       </div>
     </div>

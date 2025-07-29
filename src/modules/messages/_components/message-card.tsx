@@ -1,3 +1,4 @@
+import { Markdown } from "@/components/markdown/markdown";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -10,6 +11,7 @@ import { UIMessage, useChat } from "@ai-sdk/react";
 import { format } from "date-fns";
 import { CopyIcon, Share2Icon } from "lucide-react";
 import Image from "next/image";
+import React from "react";
 
 interface Props {
   message: UIMessage;
@@ -46,7 +48,7 @@ const UserMessageCard = ({ message }: Props) => {
   );
 };
 
-const AssistantMessageCard = ({ message, status }: Props) => {
+const AssistantMessageCard = React.memo(({ message, status }: Props) => {
   return (
     <div
       className={cn(
@@ -74,9 +76,7 @@ const AssistantMessageCard = ({ message, status }: Props) => {
             "shadow-none text-[14px] md:text-[16px]  bg-transparent dark:bg-neutral-900 w-full p-5 border-none animate-fade-in max-w-full"
           )}
         >
-          {message.parts.map((part, index) =>
-            part.type === "text" ? <span key={index}>{part.text}</span> : null
-          )}
+          <Markdown message={message} />
           <div
             className={cn(
               "h-7 -ml-1.5 gap-x-1 mt-4 text-neutral-700 dark:text-neutral-300 flex opacity-0 justify-start items-center transition-opacity duration-500",
@@ -113,4 +113,6 @@ const AssistantMessageCard = ({ message, status }: Props) => {
       </div>
     </div>
   );
-};
+});
+
+AssistantMessageCard.displayName = "AssistantMessageCard";
