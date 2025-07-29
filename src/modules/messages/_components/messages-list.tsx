@@ -27,8 +27,6 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
 
   const initialMessage = searchParams.get("message");
 
-  const [buttonType, setButtonType] = useState<"arrow" | "square">("arrow");
-
   const { messages, status, sendMessage, stop } = useChat({
     id: chatId,
     messages: initialMessages,

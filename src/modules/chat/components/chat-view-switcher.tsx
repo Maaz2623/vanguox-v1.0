@@ -19,7 +19,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { useTheme } from "next-themes";
 
 const teams = [
   {
@@ -30,7 +29,6 @@ const teams = [
 ];
 
 export function ChatViewSwitcher() {
-  const { theme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
