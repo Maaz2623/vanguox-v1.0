@@ -2,6 +2,26 @@ import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
+
+export const getChat = query({
+  args: {
+    chatId: v.string()
+  },
+  handler: async (ctx, {chatId}) => {
+    const id = chatId as Id<"chats">
+
+    const chat = await ctx.db.get(id)
+
+    if(!chat) {
+      throw new Error("Not Found")
+    }
+
+
+    return chat
+
+  }
+})
+
 export const updateConvexChatTitle = mutation({
   args: {
     title: v.string(),

@@ -94,7 +94,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
     <>
       <div className="w-full h-full overflow-hidden relative flex flex-col justify-between">
         <div className="absolute top-0 left-0 w-full bg-white z-50">
-          <ChatViewSiteHeader />
+          <ChatViewSiteHeader chatId={chatId} />
         </div>
         <ScrollArea className="w-full h-screen overflow-auto">
           <div className="w-[70%] mx-auto h-full pb-[40vh] pt-20 flex flex-col gap-y-10">
