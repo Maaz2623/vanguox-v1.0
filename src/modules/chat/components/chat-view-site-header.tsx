@@ -5,6 +5,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TypeAnimation } from "react-type-animation";
 
 export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
   const data = useQuery(api.chats.getChat, {
@@ -20,7 +21,9 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         {data ? (
-          <h1 className="text-base font-medium">{data.title}</h1>
+          <h1 className="text-base font-medium">
+            <TypeAnimation sequence={[data.title]} cursor={false} />
+          </h1>
         ) : (
           <Skeleton className="h-8 bg-neutral-300" />
         )}
