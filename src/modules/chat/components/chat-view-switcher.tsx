@@ -19,6 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const teams = [
   {
@@ -41,7 +42,7 @@ export function ChatViewSwitcher() {
   if (!activeTeam) {
     return null;
   }
-  if (!mounted) return null; // or show a loading skeleton or fallback
+  if (!mounted) return <Skeleton className="h-12" />; // or show a loading skeleton or fallback
 
   return (
     <SidebarMenu>
@@ -50,7 +51,7 @@ export function ChatViewSwitcher() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent bg-neutral-800 data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                 <Image

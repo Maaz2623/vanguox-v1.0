@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         const assistantMessage = updatedMessages[updatedMessages.length - 1];
 
 
-        if(messages.length < 2) {
+        if(messages.length < 6) {
           updateChatTitle({
             chatId: id,
             messages,
