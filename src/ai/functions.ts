@@ -1,24 +1,28 @@
-"use server"
+"use server";
 
-import { db } from "@/db"
-import { messagesTabe } from "@/db/schema"
-import { google } from "@ai-sdk/google"
-import { UIMessage, convertToModelMessages, generateText } from "ai"
-import { eq } from "drizzle-orm"
+import { db } from "@/db";
+import { messagesTabe } from "@/db/schema";
+import { google } from "@ai-sdk/google";
+import { UIMessage, convertToModelMessages, generateText } from "ai";
+import { ConvexHttpClient } from "convex/browser";
+import { eq } from "drizzle-orm";
+import { api } from "../../convex/_generated/api";
 
-
+const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export async function loadChat(id: string) {
+  const messages = await db
+    .select()
+    .from(messagesTabe)
+    .where(eq(messagesTabe.chatId, id));
 
-    const messages = await db.select().from(messagesTabe).where(eq(messagesTabe.chatId, id))
+  if (messages.length === 0) {
+    return [];
+  }
 
-    if(messages.length === 0) {
-        return []
-    }
+  const formattedMessages = messages.map((msg) => msg.message);
 
-    const formattedMessages = messages.map((msg) => msg.message)
-
-    return formattedMessages
+  return formattedMessages;
 }
 
 export async function updateChatTitle({
@@ -31,24 +35,21 @@ export async function updateChatTitle({
   try {
     const result = await generateText({
       model: google.chat("gemini-2.5-flash"),
+      system:
+        "You are a messages summarizer. You take the prompts and extract the topics efficiently in least possbile words. This title will be give for the chat. Do not include markdown, just plain text.",
       messages: convertToModelMessages(messages),
     });
 
     const title = result.text;
 
-    await fetch("http://localhost:3000/api/updateTitle", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ chatId, title }),
+    await convex.mutation(api.chats.updateConvexChatTitle, {
+      title: title,
+      chatId: chatId,
     });
   } catch (error) {
     console.log("updateChatTitle error", error);
   }
 }
-
-
 
 export async function saveChat({
   chatId,
@@ -57,20 +58,22 @@ export async function saveChat({
   chatId: string;
   messages: UIMessage[];
 }) {
-    try {
-        
-        const newMessages = await db.insert(messagesTabe).values(
-            messages.map((msg) => ({
-                message: {
-                    ...msg,
-                    id: msg.id
-                },
-                chatId: chatId
-            }))
-        ).returning()
+  try {
+    const newMessages = await db
+      .insert(messagesTabe)
+      .values(
+        messages.map((msg) => ({
+          message: {
+            ...msg,
+            id: msg.id,
+          },
+          chatId: chatId,
+        }))
+      )
+      .returning();
 
-        return newMessages
-    } catch (error) {
-        console.log(error)
-    }
+    return newMessages;
+  } catch (error) {
+    console.log(error);
+  }
 }
