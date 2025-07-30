@@ -2,19 +2,31 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCard } from "./message-card";
 import { UIMessage, useChat } from "@ai-sdk/react";
-import { useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   ArrowUpIcon,
+  CheckCircleIcon,
   Loader2Icon,
+  PaperclipIcon,
   PlusCircleIcon,
   SquareIcon,
+  XIcon,
 } from "lucide-react";
 import { useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { DefaultChatTransport } from "ai";
 import { useSearchParams } from "next/navigation";
 import { ChatViewSiteHeader } from "@/modules/chat/components/chat-view-site-header";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { getTruncatedFileName } from "@/lib/utils";
 
 interface Props {
   chatId: string;
@@ -49,6 +61,8 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
   }, [initialMessage, sendMessage]);
 
   const [prompt, setPrompt] = useState("");
+
+  const [optionsOpen, setOptionsOpen] = useState(false);
 
   const onSubmit = () => {
     if (status === "streaming") {
@@ -90,6 +104,13 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
     if (!messages || messages.length === 0) return;
   }, [messages.length, messages, isLastMessageUser]);
 
+  const [files, setFiles] = useState<FileList | undefined>(undefined);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <>
       <div className="w-full h-full overflow-hidden relative max-w-screen flex flex-col justify-between">
@@ -109,11 +130,34 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
             <div ref={bottomRef} />
           </div>
         </ScrollArea>
-        <div className="h-[15vh] bg-gradient-to-b from-transparent to-background w-full flex justify-center items-center">
+        <div className="h-auto mb-3 flex-col w-full flex justify-center items-center">
+          {files && files.length > 0 && (
+            <Attachments files={files} setFiles={setFiles} />
+          )}
           <div className="p-2 md:w-3/4 w-[95%]  rounded-lg border border-neutral-300 bg-neutral-200 dark:border-neutral-700 shadow-lg dark:bg-neutral-800 mx-auto flex items-center">
-            <Button className="" variant={`ghost`} size={`icon`}>
-              <PlusCircleIcon />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  className=""
+                  variant={`ghost`}
+                  size={`icon`}
+                  onClick={() => setOptionsOpen(true)}
+                >
+                  <PlusCircleIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="z-50 border-none w-[200px] py-1">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="flex gap-x-2"
+                  onClick={handleClick}
+                >
+                  <PaperclipIcon className="text-muted-foreground size-4" />
+                  Upload Files
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <TextAreaAutoSize
               rows={1}
               maxRows={3}
@@ -143,8 +187,74 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
               )}
               {status === "streaming" && <SquareIcon className=" fill-white" />}
             </Button>
+            <input
+              type="file"
+              className="hidden"
+              onChange={(event) => {
+                if (event.target.files) {
+                  setFiles(event.target.files);
+                }
+              }}
+              ref={fileInputRef}
+            />
           </div>
         </div>
+      </div>
+    </>
+  );
+};
+
+interface AttachmentsProps {
+  files: FileList | undefined;
+  setFiles: Dispatch<SetStateAction<FileList | undefined>>;
+}
+
+const Attachments = ({ files, setFiles }: AttachmentsProps) => {
+  const uploadedFilesRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!files || files.length === 0) return;
+
+    const fileArray = Array.from(files);
+
+    const newFiles = fileArray.filter((file) => {
+      const key = `${file.name}-${file.size}-${file.lastModified}`;
+      return !uploadedFilesRef.current.has(key);
+    });
+
+    if (newFiles.length === 0) return;
+
+    newFiles.forEach((file) => {
+      const key = `${file.name}-${file.size}-${file.lastModified}`;
+      uploadedFilesRef.current.add(key);
+    });
+  }, [files]);
+
+  return (
+    <>
+      <div className="px-3 py-2 bg-card rounded-t-lg w-[90%] md:w-[70%] mx-auto flex justify-between items-center">
+        <Button
+          size={`sm`}
+          variant={`link`}
+          className="text-sm cursor-pointer "
+        >
+          {files &&
+            Array.from(files).map((file, idx) => (
+              <div key={idx} className="flex gap-x-2 w-full ">
+                <CheckCircleIcon className="text-green-500" />
+                <p className="max-w-[200px] truncate">
+                  {getTruncatedFileName(file.name)}
+                </p>
+              </div>
+            ))}
+        </Button>
+        <Button
+          variant={`ghost`}
+          className="h-5 w-5"
+          onClick={() => setFiles(undefined)}
+        >
+          <XIcon className="size-4" />
+        </Button>
       </div>
     </>
   );
