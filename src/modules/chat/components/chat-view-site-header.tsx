@@ -16,9 +16,14 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const [animationKey, setAnimationKey] = useState(0);
 
+  // Update animation key when title changes
   useEffect(() => {
-    if (data?.title) setTitle(data.title);
+    if (data?.title) {
+      setTitle(data.title);
+      setAnimationKey((prev) => prev + 1); // force re-mount TypeAnimation
+    }
   }, [data?.title]);
 
   useEffect(() => {
@@ -64,7 +69,7 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
                 className="cursor-pointer"
               >
                 <TypeAnimation
-                  key={data.title}
+                  key={animationKey}
                   sequence={[data.title]}
                   cursor={false}
                 />
