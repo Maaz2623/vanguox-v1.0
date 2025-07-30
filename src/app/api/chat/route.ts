@@ -1,6 +1,6 @@
 import { streamText, UIMessage, convertToModelMessages, smoothStream, createIdGenerator } from 'ai';
 import { google } from '@ai-sdk/google'
-import { saveChat } from '@/ai/functions';
+import { saveChat, updateChatTitle } from '@/ai/functions';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
