@@ -70,7 +70,7 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
             ) : (
               <div
                 onClick={() => setIsEditing(true)}
-                className="cursor-pointer flex items-center gap-1"
+                className="cursor-pointer flex items-center gap-x-2"
               >
                 <span key={typewriterKey}>
                   <Typewriter

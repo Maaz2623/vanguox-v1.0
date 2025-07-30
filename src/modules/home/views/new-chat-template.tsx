@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { TypeAnimation } from "react-type-animation";
 
 export const NewChatTemplateView = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,9 @@ export const NewChatTemplateView = ({ userId }: { userId: string }) => {
     });
   };
 
+  const subText =
+    "A powerful AI system designed to enhance ideas and streamline creation.";
+
   return (
     <div className="h-screen">
       <SidebarTrigger className="absolute top-3 left-3 size-10" />
@@ -49,8 +53,7 @@ export const NewChatTemplateView = ({ userId }: { userId: string }) => {
           <Image src="/logo.svg" alt="logo" width={100} height={100} priority />
           <h1 className="text-4xl font-semibold mt-4">Vanguox AI</h1>
           <p className="text-md text-muted-foreground mt-2 px-2">
-            A powerful AI system designed to enhance ideas and streamline
-            creation.
+            <TypeAnimation sequence={[subText]} speed={80} cursor={false} />
           </p>
         </motion.div>
       </AnimatePresence>
