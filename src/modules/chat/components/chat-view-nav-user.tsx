@@ -70,7 +70,7 @@ export function ChatViewNavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg border-none"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -97,7 +97,7 @@ export function ChatViewNavUser({
                     <SunMoonIcon className="mr-1 size-4.5 text-neutral-600 dark:text-neutral-400" />
                     Theme
                   </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
+                  <DropdownMenuSubContent className="border-none">
                     <DropdownMenuItem onClick={() => setTheme("light")}>
                       <SunIcon />
                       Light

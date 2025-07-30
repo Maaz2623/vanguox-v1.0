@@ -19,7 +19,7 @@ export default async function ChatViewLayout({
         <HomeView />
       ) : (
         <SidebarProvider
-          className="dark:bg-neutral-900 bg-neutral-100 h-screen"
+          className="dark:bg-neutral-900 bg-white h-screen"
           style={
             {
               // "--sidebar-width": "calc(var(--spacing) * 72)",
@@ -36,7 +36,7 @@ export default async function ChatViewLayout({
             variant="inset"
             className="border-r border-neutral-200 dark:border-neutral-800"
           />
-          <SidebarInset className="bg-transparent relative shadow-none! m-0! rounded-none! border-none!">
+          <SidebarInset className="bg-white dark:bg-neutral-900 relative shadow-none! m-0! rounded-none! border-none!">
             {children}
           </SidebarInset>
         </SidebarProvider>

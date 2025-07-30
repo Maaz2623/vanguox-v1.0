@@ -93,7 +93,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
   return (
     <>
       <div className="w-full h-full overflow-hidden relative flex flex-col justify-between">
-        <div className="absolute top-0 left-0 w-full bg-white z-50">
+        <div className="absolute top-0 left-0 w-full z-50">
           <ChatViewSiteHeader chatId={chatId} />
         </div>
         <ScrollArea className="w-full h-screen overflow-auto">
@@ -109,8 +109,8 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
             <div ref={bottomRef} />
           </div>
         </ScrollArea>
-        <div className="h-[15vh] bg-gradient-to-b from-transparent to-white w-full flex justify-center items-center">
-          <div className="p-2 md:w-3/4 w-[95%]  rounded-lg border border-neutral-300 mx-auto flex items-center">
+        <div className="h-[15vh] bg-gradient-to-b from-transparent to-background w-full flex justify-center items-center">
+          <div className="p-2 md:w-3/4 w-[95%]  rounded-lg border border-neutral-300 bg-neutral-200 dark:border-neutral-700 shadow-lg dark:bg-neutral-800 mx-auto flex items-center">
             <Button className="" variant={`ghost`} size={`icon`}>
               <PlusCircleIcon />
             </Button>

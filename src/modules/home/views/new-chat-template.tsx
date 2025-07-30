@@ -48,13 +48,13 @@ export const NewChatTemplateView = ({ userId }: { userId: string }) => {
         >
           <Image src="/logo.svg" alt="logo" width={100} height={100} priority />
           <h1 className="text-4xl font-semibold mt-4">Vanguox AI</h1>
-          <p className="text-md text-muted-foreground mt-2">
+          <p className="text-md text-muted-foreground mt-2 px-2">
             A powerful AI system designed to enhance ideas and streamline
             creation.
           </p>
         </motion.div>
       </AnimatePresence>
-      <div className="p-2 w-3/4 rounded-lg border bg-stone-50 border-neutral-300 mx-auto flex items-center">
+      <div className="p-2 w-[95%] md:w-3/4 rounded-lg border border-neutral-200 dark:border-neutral-700 mx-auto flex items-center shadow-lg bg-neutral-200 dark:bg-neutral-800">
         <Button className="" variant={`ghost`} size={`icon`}>
           <PlusCircleIcon />
         </Button>
