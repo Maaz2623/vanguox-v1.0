@@ -5,24 +5,28 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TypeAnimation } from "react-type-animation";
 import { useState, useEffect, useRef } from "react";
-import { Input } from "@/components/ui/input"; // Ensure you have an Input component
+import { Input } from "@/components/ui/input";
+import { EditIcon } from "lucide-react";
+import { Typewriter } from "react-simple-typewriter";
 
 export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
   const data = useQuery(api.chats.getChat, { chatId });
-  const updateTitle = useMutation(api.chats.updateConvexChatTitle); // Assume this mutation exists
+  const updateTitle = useMutation(api.chats.updateConvexChatTitle);
 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [animationKey, setAnimationKey] = useState(0);
 
-  // Update animation key when title changes
+  const [hasAnimationCompleted, setHasAnimationCompleted] = useState(false);
+  const [typewriterKey, setTypewriterKey] = useState(0);
+
+  // Update title and reset animation when data.title changes
   useEffect(() => {
     if (data?.title) {
       setTitle(data.title);
-      setAnimationKey((prev) => prev + 1); // force re-mount TypeAnimation
+      setHasAnimationCompleted(false);
+      setTypewriterKey((prev) => prev + 1); // force remount Typewriter
     }
   }, [data?.title]);
 
@@ -46,7 +50,7 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         {data ? (
-          <div className="text-base font-medium dark:text-neutral-400 text-neutral-600 w-full max-w-xs">
+          <div className="text-base font-medium items-center gap-x-2 flex dark:text-neutral-400 text-neutral-600 w-full max-w-xs">
             {isEditing ? (
               <Input
                 ref={inputRef}
@@ -66,13 +70,20 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
             ) : (
               <div
                 onClick={() => setIsEditing(true)}
-                className="cursor-pointer"
+                className="cursor-pointer flex items-center gap-1"
               >
-                <TypeAnimation
-                  key={animationKey}
-                  sequence={[data.title]}
-                  cursor={false}
-                />
+                <span key={typewriterKey}>
+                  <Typewriter
+                    words={[data.title]}
+                    typeSpeed={50}
+                    deleteSpeed={0}
+                    delaySpeed={1000}
+                    onLoopDone={() => setHasAnimationCompleted(true)}
+                  />
+                </span>
+                {hasAnimationCompleted && (
+                  <EditIcon className="size-4 text-muted-foreground" />
+                )}
               </div>
             )}
           </div>
