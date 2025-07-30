@@ -97,7 +97,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
           <ChatViewSiteHeader chatId={chatId} />
         </div>
         <ScrollArea className="w-full h-screen overflow-auto">
-          <div className="w-[70%] mx-auto h-full pb-[40vh] pt-20 flex flex-col gap-y-10">
+          <div className="md:w-[70%] w-[95%] mx-auto h-full pb-[50vh] pt-20 flex flex-col gap-y-10">
             {stableMessages.map((msg) => (
               <MessageCard status={status} message={msg} key={msg.id} />
             ))}
@@ -110,7 +110,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
           </div>
         </ScrollArea>
         <div className="h-[15vh] bg-gradient-to-b from-transparent to-white w-full flex justify-center items-center">
-          <div className="p-2 w-3/4  rounded-lg border border-neutral-300 mx-auto flex items-center">
+          <div className="p-2 md:w-3/4 w-[95%]  rounded-lg border border-neutral-300 mx-auto flex items-center">
             <Button className="" variant={`ghost`} size={`icon`}>
               <PlusCircleIcon />
             </Button>
