@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { CopyIcon, Share2Icon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { SyncLoader } from "react-spinners";
 
 interface Props {
   message: UIMessage;
