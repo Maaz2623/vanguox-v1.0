@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { CopyIcon, Share2Icon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { SyncLoader } from "react-spinners";
+import removeMarkdown from "remove-markdown";
 
 interface Props {
   message: UIMessage;
@@ -77,39 +77,7 @@ const AssistantMessageCard = React.memo(({ message, status }: Props) => {
             "shadow-none text-[14px] md:text-[16px] text-neutral-800 dark:text-neutral-200  bg-transparent dark:bg-neutral-900 w-full p-5 border-none animate-fade-in max-w-full"
           )}
         >
-          <Markdown message={message} />
-          <div
-            className={cn(
-              "h-7 -ml-1.5 gap-x-1 mt-4 text-neutral-700 dark:text-neutral-400 flex opacity-0 justify-start items-center transition-opacity duration-500",
-              status === "ready" &&
-                "opacity-100 transition-opacity duration-500"
-            )}
-          >
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={`ghost`}
-                  size={`icon`}
-                  className="cursor-pointer size-7 p-0! rounded-[10px]!"
-                >
-                  <CopyIcon className="size-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Copy text</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={`ghost`}
-                  size={`icon`}
-                  className="cursor-pointer size-7 rounded-[10px]!"
-                >
-                  <Share2Icon className="size-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Share link</TooltipContent>
-            </Tooltip>
-          </div>
+          <Markdown status={status} message={message} />
         </div>
       </div>
     </div>
