@@ -38,7 +38,7 @@ export const MessageCard = ({ message, status }: Props) => {
 const UserMessageCard = ({ message }: Props) => {
   return (
     <div className="w-full flex justify-end text-[14px] md:text-[16px]">
-      <Card className="shadow-none animate-in duration-300 w-fit max-w-[60%] py-2 px-4 rounded-md! bg-neutral-300 dark:bg-blend-color-burn border-none dark:text-white text-neutral-900 ">
+      <Card className="shadow-none animate-in duration-300 w-fit max-w-[60%] py-2 px-4 rounded-md! bg-neutral-300 dark:bg-neutral-700 border-none dark:text-neutral-200 text-neutral-900 ">
         {message.parts.map((part, i) => (
           <span className="" key={i}>
             {part.type === "text" && part.text}
