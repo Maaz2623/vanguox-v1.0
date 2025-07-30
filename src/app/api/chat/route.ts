@@ -29,8 +29,7 @@ export async function POST(req: Request) {
       size: 16,
     }),
       onFinish: async ({messages: updatedMessages}) => {
-  const assistantMessage = updatedMessages[updatedMessages.length - 1];
-
+        const assistantMessage = updatedMessages[updatedMessages.length - 1];
 
         await saveChat({
           chatId: id,

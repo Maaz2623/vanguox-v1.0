@@ -128,11 +128,13 @@ const data = {
 
 interface ChatViewSidebarProps extends React.ComponentProps<typeof Sidebar> {
   auth: boolean;
+  userId: string;
   name: string;
   email: string;
   image?: string | null;
 }
 export function ChatViewSidebar({
+  userId,
   auth,
   name,
   email,
@@ -149,7 +151,7 @@ export function ChatViewSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <ChatViewNavMain items={data.navMain} />
+        <ChatViewNavMain userId={userId} items={data.navMain} />
         <ChatViewNavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

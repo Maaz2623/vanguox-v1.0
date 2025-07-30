@@ -27,7 +27,9 @@ import Link from "next/link";
 
 export function ChatViewNavMain({
   items,
+  userId,
 }: {
+  userId: string;
   items: {
     title: string;
     url: string;
@@ -37,7 +39,7 @@ export function ChatViewNavMain({
   const router = useRouter();
 
   const chats = useQuery(api.chats.getChats, {
-    userId: "wGE4sjNCrFsXRRKhcqETKwNi4Isdv5G9",
+    userId: userId,
   });
 
   const pathname = usePathname();

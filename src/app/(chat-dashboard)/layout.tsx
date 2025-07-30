@@ -32,6 +32,7 @@ export default async function ChatViewLayout({
             name={data.user.name}
             email={data.user.email}
             image={data.user.image}
+            userId={data.user.id}
             variant="inset"
             className="border-r border-neutral-200 dark:border-neutral-800"
           />
