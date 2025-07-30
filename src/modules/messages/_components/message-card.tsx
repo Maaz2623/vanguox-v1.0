@@ -74,7 +74,7 @@ const AssistantMessageCard = React.memo(({ message, status }: Props) => {
       <div className="w-full flex justify-start flex-col gap-y-2">
         <div
           className={cn(
-            "shadow-none text-[14px] md:text-[16px] text-neutral-200  bg-transparent dark:bg-neutral-900 w-full p-5 border-none animate-fade-in max-w-full"
+            "shadow-none text-[14px] md:text-[16px] text-neutral-800 dark:text-neutral-200  bg-transparent dark:bg-neutral-900 w-full p-5 border-none animate-fade-in max-w-full"
           )}
         >
           <Markdown message={message} />
