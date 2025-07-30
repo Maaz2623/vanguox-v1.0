@@ -8,6 +8,7 @@ import { startTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export const NewChatTemplateView = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,8 @@ export const NewChatTemplateView = ({ userId }: { userId: string }) => {
   };
 
   return (
-    <div>
+    <div className="h-screen">
+      <SidebarTrigger className="absolute top-3 left-3 size-10" />
       <AnimatePresence mode="wait" initial={true}>
         <motion.div
           key="new-messages-view-logo"
