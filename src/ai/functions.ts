@@ -36,7 +36,7 @@ export async function updateChatTitle({
     const result = await generateText({
       model: google.chat("gemini-2.5-flash"),
       system:
-        "You are a messages summarizer. You take the prompts and extract the topics efficiently in less than 4 words. This title will be give for the chat. Do not include markdown, just plain text.",
+        "You are a messages summarizer. You take the prompts and extract the topics efficiently in least possible words. This title will be give for the chat. Do not include markdown, just plain text. Never say no topic and never say anything like varied topics. If multiple topics seperate by commas. Never exceed more than 4 words.",
       messages: convertToModelMessages(messages),
     });
 

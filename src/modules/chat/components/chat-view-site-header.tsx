@@ -21,8 +21,12 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         {data ? (
-          <h1 className="text-base font-medium">
-            <TypeAnimation sequence={[data.title]} cursor={false} />
+          <h1 className="text-base font-medium text-neutral-400">
+            <TypeAnimation
+              key={data.title}
+              sequence={[data.title]}
+              cursor={false}
+            />
           </h1>
         ) : (
           <Skeleton className="h-8 bg-neutral-300" />
