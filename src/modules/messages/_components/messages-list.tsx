@@ -27,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getTruncatedFileName } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadthing";
 
 interface Props {
   chatId: string;
@@ -62,20 +63,6 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
 
   const [prompt, setPrompt] = useState("");
 
-  const [optionsOpen, setOptionsOpen] = useState(false);
-
-  const onSubmit = () => {
-    if (status === "streaming") {
-      stop();
-      return;
-    }
-
-    if (!prompt.trim()) return; // Avoid sending empty messages
-
-    sendMessage({ text: prompt });
-    setPrompt("");
-  };
-
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const lastMessage = messages[messages.length - 1];
@@ -91,6 +78,21 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
       : null;
 
   const stableMessages = streamingMessage ? messages.slice(0, -1) : messages;
+
+  const [imageFileUrl, setImageFileUrl] = useState<string | undefined>(
+    undefined
+  );
+  const [anyFileUrl, setAnyFileUrl] = useState<string | undefined>(undefined);
+
+  const { startUpload, isUploading } = useUploadThing("imageUploader", {
+    onClientUploadComplete: (data) => {
+      if (data[0].type.startsWith("image/")) {
+        setImageFileUrl(data[0].ufsUrl);
+      } else {
+        setAnyFileUrl(data[0].ufsUrl);
+      }
+    },
+  });
 
   useEffect(() => {
     if (isLastMessageUser) {
@@ -109,6 +111,19 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
 
   const handleClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const onSubmit = () => {
+    if (status === "streaming") {
+      stop();
+      return;
+    }
+
+    if (!prompt.trim()) return; // Avoid sending empty messages
+
+    sendMessage({ text: prompt, files: files });
+    setFiles(undefined);
+    setPrompt("");
   };
 
   return (
@@ -132,17 +147,17 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
         </ScrollArea>
         <div className="h-auto mb-3 flex-col w-full flex justify-center items-center">
           {files && files.length > 0 && (
-            <Attachments files={files} setFiles={setFiles} />
+            <Attachments
+              startUpload={startUpload}
+              isUploading={isUploading}
+              files={files}
+              setFiles={setFiles}
+            />
           )}
           <div className="p-2 md:w-3/4 w-[95%]  rounded-lg border border-neutral-300 bg-neutral-200 dark:border-neutral-700 shadow-lg dark:bg-neutral-800 mx-auto flex items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  className=""
-                  variant={`ghost`}
-                  size={`icon`}
-                  onClick={() => setOptionsOpen(true)}
-                >
+                <Button className="" variant={`ghost`} size={`icon`}>
                   <PlusCircleIcon />
                 </Button>
               </DropdownMenuTrigger>
@@ -207,9 +222,16 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
 interface AttachmentsProps {
   files: FileList | undefined;
   setFiles: Dispatch<SetStateAction<FileList | undefined>>;
+  startUpload: ReturnType<typeof useUploadThing>["startUpload"];
+  isUploading: ReturnType<typeof useUploadThing>["isUploading"];
 }
 
-const Attachments = ({ files, setFiles }: AttachmentsProps) => {
+const Attachments = ({
+  files,
+  setFiles,
+  startUpload,
+  isUploading,
+}: AttachmentsProps) => {
   const uploadedFilesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -228,7 +250,15 @@ const Attachments = ({ files, setFiles }: AttachmentsProps) => {
       const key = `${file.name}-${file.size}-${file.lastModified}`;
       uploadedFilesRef.current.add(key);
     });
-  }, [files]);
+
+    startUpload(newFiles)
+      .then((res) => {
+        console.log("Upload result:", res);
+      })
+      .catch((err) => {
+        console.error("Upload failed:", err);
+      });
+  }, [files, startUpload]);
 
   return (
     <>
@@ -241,7 +271,11 @@ const Attachments = ({ files, setFiles }: AttachmentsProps) => {
           {files &&
             Array.from(files).map((file, idx) => (
               <div key={idx} className="flex gap-x-2 w-full ">
-                <CheckCircleIcon className="text-green-500" />
+                {isUploading ? (
+                  <Loader2Icon className="text-neutral-500 animate-spin" />
+                ) : (
+                  <CheckCircleIcon className="text-green-500" />
+                )}
                 <p className="max-w-[200px] truncate">
                   {getTruncatedFileName(file.name)}
                 </p>
