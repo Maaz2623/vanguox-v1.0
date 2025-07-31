@@ -157,3 +157,23 @@
   --tracking-wider: calc(var(--tracking-normal) + 0.05em);
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
 }
+
+/* Basic styles */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #ff0000; /* change to your brand color */
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+/* Optional: spinner */
+#nprogress .spinner {
+  display: none;
+}

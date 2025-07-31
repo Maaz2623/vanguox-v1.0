@@ -1,18 +1,10 @@
 import { Markdown } from "@/components/markdown/markdown";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { UIMessage, useChat } from "@ai-sdk/react";
 import { format } from "date-fns";
-import { CopyIcon, Share2Icon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import removeMarkdown from "remove-markdown";
 
 interface Props {
   message: UIMessage;

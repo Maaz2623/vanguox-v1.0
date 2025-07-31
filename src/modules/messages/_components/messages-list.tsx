@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getTruncatedFileName } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
+import Link from "next/link";
 
 interface Props {
   chatId: string;
@@ -148,6 +149,8 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
         <div className="h-auto mb-3 flex-col w-full flex justify-center items-center">
           {files && files.length > 0 && (
             <Attachments
+              imageFileUrl={imageFileUrl}
+              anyFileUrl={anyFileUrl}
               startUpload={startUpload}
               isUploading={isUploading}
               files={files}
@@ -222,6 +225,8 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
 interface AttachmentsProps {
   files: FileList | undefined;
   setFiles: Dispatch<SetStateAction<FileList | undefined>>;
+  imageFileUrl: string | undefined;
+  anyFileUrl: string | undefined;
   startUpload: ReturnType<typeof useUploadThing>["startUpload"];
   isUploading: ReturnType<typeof useUploadThing>["isUploading"];
 }
@@ -231,6 +236,8 @@ const Attachments = ({
   setFiles,
   startUpload,
   isUploading,
+  imageFileUrl,
+  anyFileUrl,
 }: AttachmentsProps) => {
   const uploadedFilesRef = useRef<Set<string>>(new Set());
 
@@ -260,6 +267,8 @@ const Attachments = ({
       });
   }, [files, startUpload]);
 
+  const fileUrl = imageFileUrl ?? anyFileUrl ?? "";
+
   return (
     <>
       <div className="px-3 py-2 bg-card rounded-t-lg w-[90%] md:w-[70%] mx-auto flex justify-between items-center">
@@ -276,9 +285,10 @@ const Attachments = ({
                 ) : (
                   <CheckCircleIcon className="text-green-500" />
                 )}
-                <p className="max-w-[200px] truncate">
+                <Link href={fileUrl}>
                   {getTruncatedFileName(file.name)}
-                </p>
+                  <p className="max-w-[200px] truncate"></p>
+                </Link>
               </div>
             ))}
         </Button>

@@ -16,8 +16,6 @@ interface Props {
 export const Markdown = ({ message, status }: Props) => {
   const [copied, setCopied] = useState(false);
 
-  
-
   useEffect(() => {
     if (!copied) return;
 
@@ -57,9 +55,9 @@ export const Markdown = ({ message, status }: Props) => {
                       className="cursor-pointer size-7 p-0! rounded-[10px]!"
                     >
                       {copied ? (
-                        <CheckIcon className="size-4" />
+                        <CheckIcon className="size-3.5" />
                       ) : (
-                        <CopyIcon className="size-4" />
+                        <CopyIcon className="size-3.5" />
                       )}
                     </Button>
                   </TooltipTrigger>
@@ -72,7 +70,7 @@ export const Markdown = ({ message, status }: Props) => {
                       size={`icon`}
                       className="cursor-pointer size-7 rounded-[10px]!"
                     >
-                      <Share2Icon className="size-4" />
+                      <Share2Icon className="size-3.5" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>Share link</TooltipContent>
