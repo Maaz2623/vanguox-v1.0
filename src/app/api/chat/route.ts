@@ -7,9 +7,11 @@ import {
 } from "ai";
 import { google } from "@ai-sdk/google";
 import { saveChat, updateChatTitle } from "@/ai/functions";
+import { myToolSet } from "@/ai/tools";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
+
 
 export async function POST(req: Request) {
   const { messages, id }: { messages: UIMessage[]; id: string } =
@@ -25,6 +27,7 @@ export async function POST(req: Request) {
         chunking: "word",
         delayInMs: 50,
       }),
+      tools: myToolSet,
     });
 
     return result.toUIMessageStreamResponse({

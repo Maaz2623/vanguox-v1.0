@@ -77,3 +77,14 @@ export async function saveChat({
     console.log(error);
   }
 }
+
+
+export async function base64ToFile(base64: string, mimeType: string, filename: string): Promise<File> {
+  const byteString = atob(base64);
+  const arrayBuffer = new ArrayBuffer(byteString.length);
+  const intArray = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < byteString.length; i++) {
+    intArray[i] = byteString.charCodeAt(i);
+  }
+  return new File([intArray], filename, { type: mimeType });
+}

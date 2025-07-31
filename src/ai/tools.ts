@@ -1,0 +1,53 @@
+import { google } from "@ai-sdk/google";
+import { tool, generateText, Tool, ToolCallUnion, ToolResultUnion } from "ai";
+import { UTApi } from "uploadthing/server";
+import z from "zod";
+import { base64ToFile } from "./functions";
+
+
+export const utapi = new UTApi({
+  // ...options,
+});
+
+export const myToolSet = {
+    generateImage: tool({
+        description: "Generate an image",
+    inputSchema: z.object({
+        prompt: z.string().describe('The prompt to generate the image from')
+    }),
+    execute: async ({prompt}) => {
+        try {
+            
+            const result = await generateText({
+            model: google('gemini-2.0-flash-exp'),
+            providerOptions: {
+                google: { responseModalities: ['IMAGE', 'TEXT'] },
+            },
+            prompt: prompt,
+            });
+
+
+           for (const file of result.files) {
+                if (file.mediaType.startsWith('image/')) {
+                    const readableFile = await base64ToFile(file.base64, file.mediaType, `file-${Date.now()}.png`)                    // The file object provides multiple data formats:
+                    const [uploaded] = await utapi.uploadFiles([readableFile])
+                    if(!uploaded.data) {
+                        throw new Error("Something went wrong")
+                    }
+
+                    console.log(uploaded.data.ufsUrl)
+
+                    return file.base64
+
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+})
+}
+
+
+export type MyToolCall = ToolCallUnion<typeof myToolSet>;
+export type MyToolResult = ToolResultUnion<typeof myToolSet>;

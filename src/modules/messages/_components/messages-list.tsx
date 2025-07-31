@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { useSearchParams } from "next/navigation";
 import { ChatViewSiteHeader } from "@/modules/chat/components/chat-view-site-header";
 import {
@@ -46,6 +46,7 @@ export const MessagesList = ({ initialMessages, chatId }: Props) => {
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
+    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls
   });
 
   const hasSentInitialMessage = useRef(false);
