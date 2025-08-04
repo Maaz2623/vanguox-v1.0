@@ -11,9 +11,8 @@ export const utapi = new UTApi({
 
 export const myToolSet = {
     generateImage: tool({
-        description: "Generate an image",
-    inputSchema: z.object({
-        prompt: z.string().describe('The prompt to generate the image from')
+        description: "Use this tool to generate an image when the user explicitly asks for an image, picture, or visual content. Just say I generated image of the whatever the prompt user gives. Do not return the url of the generated image.",    inputSchema: z.object({
+        prompt: z.string().describe('The prompt to generate the image from.')
     }),
     execute: async ({prompt}) => {
         try {
@@ -37,7 +36,7 @@ export const myToolSet = {
 
                     console.log(uploaded.data.ufsUrl)
 
-                    return file.base64
+                    return uploaded.data.ufsUrl
 
                 }
             }

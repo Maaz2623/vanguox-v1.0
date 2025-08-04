@@ -81,16 +81,21 @@ export const Markdown = ({ message, status }: Props) => {
               </div>
             );
           case "tool-generateImage":
-            return (
-              <div key={i}>
-                <Image
-                  src={part.output as string}
-                  alt="image"
-                  width={200}
-                  height={200}
-                />
-              </div>
-            );
+            switch (part.state) {
+              case "input-available":
+                return <div>loading...</div>;
+              case "output-available":
+                return (
+                  <div key={i}>
+                    <Image
+                      src={part.output as string}
+                      alt="image"
+                      width={200}
+                      height={200}
+                    />
+                  </div>
+                );
+            }
         }
       })}
     </div>
