@@ -39,21 +39,44 @@ export async function POST(req: Request) {
         size: 16,
       }),
       onFinish: async ({ messages: updatedMessages }) => {
-        const assistantMessage = updatedMessages[updatedMessages.length - 1];
+  console.log(updatedMessages);
 
+  if (messages.length < 2) {
+    updateChatTitle({
+      chatId: id,
+      messages,
+    });
+  }
 
-        if(messages.length < 2) {
-          updateChatTitle({
-            chatId: id,
-            messages,
-          });
-        }
+  const reversed = [...updatedMessages].reverse();
 
-        await saveChat({
-          chatId: id,
-          messages: [latestUserMessage, assistantMessage],
-        });
-      },
+  const assistantMessage = reversed.find(
+    (m) =>
+      m.role === "assistant" &&
+      m.parts.some((p) => p.type === "text") &&
+      m.parts.every((p) => p.type !== "tool-generateImage" || p.output !== undefined)
+  );
+
+  if (!assistantMessage) return;
+
+  // Now find the user message that came before this assistant message
+  const assistantIndex = updatedMessages.findIndex(
+    (m) => m.id === assistantMessage.id
+  );
+
+  const userMessage = updatedMessages
+    .slice(0, assistantIndex)
+    .reverse()
+    .find((m) => m.role === "user");
+
+  if (!userMessage) return;
+
+  await saveChat({
+    chatId: id,
+    messages: [userMessage, assistantMessage],
+  });
+}
+
     });
   } catch (error) {
     console.log(error);

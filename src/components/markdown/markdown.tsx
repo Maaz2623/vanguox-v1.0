@@ -5,7 +5,13 @@ import { useChat } from "@ai-sdk/react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import removeMarkdown from "remove-markdown";
-import { CheckIcon, CopyIcon, Share2Icon } from "lucide-react";
+import {
+  CheckIcon,
+  CopyIcon,
+  ImageIcon,
+  Loader2Icon,
+  Share2Icon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -28,7 +34,7 @@ export const Markdown = ({ message, status }: Props) => {
   }, [copied]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-3">
       {message.parts.map((part, i) => {
         switch (part.type) {
           case "text":
@@ -83,16 +89,11 @@ export const Markdown = ({ message, status }: Props) => {
           case "tool-generateImage":
             switch (part.state) {
               case "input-available":
-                return <div>loading...</div>;
+                return <GeneratingImage key={i} />;
               case "output-available":
                 return (
-                  <div key={i}>
-                    <Image
-                      src={part.output as string}
-                      alt="image"
-                      width={200}
-                      height={200}
-                    />
+                  <div key={i} className="">
+                    <GeneratedImage src={part.output as string} />
                   </div>
                 );
             }
@@ -102,11 +103,35 @@ export const Markdown = ({ message, status }: Props) => {
   );
 };
 
-{
-  /* <div key={i}>
-          {part.type === "text" && (
-           
-          )}
-          
-        </div> */
-}
+const GeneratingImage = () => {
+  return (
+    <div className="w-[350px] h-[350px] bg-neutral-800 border border-neutral-700 animate-pulse rounded-lg flex justify-center items-center">
+      <div className="relative size-10 flex justify-center items-center">
+        <Loader2Icon className="h-full w-full animate-spin text-muted-foreground" />
+        <ImageIcon className="absolute top-1/2 left-1/2 size-4 -translate-x-1/2 -translate-y-1/2 text-muted-foreground" />
+      </div>
+    </div>
+  );
+};
+
+const GeneratedImage = ({ src }: { src: string }) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className="relative min-h-[80px] aspect-auto">
+      {!loaded && <GeneratingImage />}
+      <Image
+        src={src}
+        alt="Generated image"
+        width={500}
+        height={500}
+        className={cn(
+          "rounded-lg border w-[350px] object-center border-neutral-800 aspect-auto transition-opacity duration-300",
+          loaded ? "opacity-100" : "opacity-0"
+        )}
+        onLoad={() => setLoaded(true)}
+        unoptimized // Optional: Use if the image is already optimized (e.g., from UploadThing)
+      />
+    </div>
+  );
+};
