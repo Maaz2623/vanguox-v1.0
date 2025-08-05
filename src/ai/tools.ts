@@ -34,11 +34,7 @@ export const myToolSet = {
                         throw new Error("Something went wrong")
                     }
 
-                    return {
-                        url: uploaded.data.ufsUrl,
-                        base64: file.base64,
-                        mediaType: file.mediaType
-                    }
+                    return uploaded.data.ufsUrl
 
                 }
             }
