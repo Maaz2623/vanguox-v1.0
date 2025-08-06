@@ -56,8 +56,8 @@ export const chatsTable = pgTable("chats", {
  	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 })
 
-export const messagesTabe = pgTable("messages", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
+export const messagesTable = pgTable("messages", {
+	id: text("id").primaryKey(),
 	message: jsonb("message").$type<UIMessage>().notNull(),
 	chatId: text("chat_id").notNull(),
 	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),

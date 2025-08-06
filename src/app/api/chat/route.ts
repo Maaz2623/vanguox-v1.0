@@ -39,7 +39,6 @@ export async function POST(req: Request) {
         size: 16,
       }),
       onFinish: async ({ messages: updatedMessages }) => {
-  console.log(updatedMessages);
 
   if (messages.length < 2) {
     updateChatTitle({
