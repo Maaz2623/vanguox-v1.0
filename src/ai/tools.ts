@@ -1,8 +1,12 @@
 import { google } from "@ai-sdk/google";
-import { tool, generateText, Tool, ToolCallUnion, ToolResultUnion } from "ai";
+import { tool, generateText, ToolCallUnion, ToolResultUnion } from "ai";
 import { UTApi } from "uploadthing/server";
 import z from "zod";
 import { base64ToFile } from "./functions";
+import { db } from "@/db";
+import { filesTable } from "@/db/schema";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 
 export const utapi = new UTApi({
@@ -16,6 +20,17 @@ export const myToolSet = {
     }),
     execute: async ({prompt}) => {
         try {
+
+            const data = await auth.api.getSession({
+                headers: await headers()
+            })
+
+
+            if(!data) {
+                throw new Error("Unauthorized")
+            }
+
+            console.log(data?.user.id)
             
             const result = await generateText({
             model: google('gemini-2.0-flash-exp'),
@@ -33,6 +48,12 @@ export const myToolSet = {
                     if(!uploaded.data) {
                         throw new Error("Something went wrong")
                     }
+
+                    await db.insert(filesTable).values({
+                        userId: data.user.id,
+                        url: uploaded.data.ufsUrl,
+                        mediaType: file.mediaType
+                    })
 
                     return uploaded.data.ufsUrl
 

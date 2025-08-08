@@ -63,3 +63,13 @@ export const messagesTable = pgTable("messages", {
 	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
  	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 })
+
+
+export const filesTable = pgTable("files", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	url: text("url").notNull(),
+	mediaType: text("media_type").notNull(),
+	userId: text("user_id").references(() => user.id).notNull(),
+	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()),
+ 	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
+})

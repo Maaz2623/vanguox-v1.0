@@ -1,6 +1,6 @@
 "use client";
 
-import { IconCirclePlusFilled, type Icon } from "@tabler/icons-react";
+import { IconCirclePlusFilled } from "@tabler/icons-react";
 
 import {
   SidebarGroup,
@@ -13,7 +13,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, FilesIcon, HistoryIcon } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -25,17 +25,7 @@ import { api } from "../../../../convex/_generated/api";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export function ChatViewNavMain({
-  items,
-  userId,
-}: {
-  userId: string;
-  items: {
-    title: string;
-    url: string;
-    icon?: Icon;
-  }[];
-}) {
+export function ChatViewNavMain({ userId }: { userId: string }) {
   const router = useRouter();
 
   const chats = useQuery(api.chats.getChats, {
@@ -60,61 +50,52 @@ export function ChatViewNavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <div key={item.url}>
-              {item.title === "History" ? (
-                <Collapsible
-                  key={item.title}
-                  asChild
-                  defaultOpen={false}
-                  className="group/collapsible"
-                >
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton tooltip={item.title}>
-                        {item.icon && <item.icon />}
-                        <span>{item.title}</span>
-                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <ScrollArea className="h-[200px]">
-                        <SidebarMenuSub>
-                          {chats?.map((item) => {
-                            const isActive = pathname === `/chats/${item._id}`;
-                            return (
-                              <SidebarMenuSubItem key={Math.random()}>
-                                <SidebarMenuSubButton
-                                  className={cn(
-                                    "",
-                                    isActive && "bg-neutral-500/10"
-                                  )}
-                                  asChild
-                                >
-                                  <Link href={`/chats/${item._id}`}>
-                                    <span className="w-[150px] truncate">
-                                      {item.title}
-                                    </span>
-                                  </Link>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            );
-                          })}
-                        </SidebarMenuSub>
-                      </ScrollArea>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-              ) : (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton tooltip={item.title}>
-                    {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
-            </div>
-          ))}
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href={`/files`}>
+                <FilesIcon />
+                <span>Files</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <Collapsible
+            asChild
+            defaultOpen={false}
+            className="group/collapsible"
+          >
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton tooltip={`History`}>
+                  <HistoryIcon />
+                  <span>History</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <ScrollArea className="h-[200px]">
+                  <SidebarMenuSub>
+                    {chats?.map((item) => {
+                      const isActive = pathname === `/chats/${item._id}`;
+                      return (
+                        <SidebarMenuSubItem key={Math.random()}>
+                          <SidebarMenuSubButton
+                            className={cn("", isActive && "bg-neutral-500/10")}
+                            asChild
+                          >
+                            <Link href={`/chats/${item._id}`}>
+                              <span className="w-[150px] truncate">
+                                {item.title}
+                              </span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      );
+                    })}
+                  </SidebarMenuSub>
+                </ScrollArea>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
