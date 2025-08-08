@@ -1,28 +1,47 @@
-import { getFiles } from "@/actions/files.action";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { FilesView } from "@/modules/files/ui/files-view";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import React, { Suspense } from "react";
 
 const FilesPage = async () => {
-  const files = await getFiles();
+  const queryClient = getQueryClient();
+
+  void queryClient.prefetchQuery(trpc.files.getFiles.queryOptions());
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <Header />
-      {files ? (
-        <Suspense fallback={<div>loading...</div>}>
-          <FilesView files={files} />
+
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<FilesLoading />}>
+          <FilesView />
         </Suspense>
-      ) : (
-        <div>loading...</div>
-      )}
+      </HydrationBoundary>
     </div>
   );
 };
 
 export default FilesPage;
+
+const FilesLoading = () => {
+  return (
+    <ScrollArea className="h-screen">
+      <div className="flex flex-wrap pb-40 w-full p-5 gap-3">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <Skeleton
+            className="w-[200px] h-[200px] dark:bg-neutral-800"
+            key={i}
+          />
+        ))}
+      </div>
+    </ScrollArea>
+  );
+};
 
 const Header = () => {
   return (

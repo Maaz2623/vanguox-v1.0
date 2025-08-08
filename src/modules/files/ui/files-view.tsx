@@ -1,30 +1,95 @@
 "use client";
 
-import { getFiles } from "@/actions/files.action";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { DownloadIcon } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
-interface Props {
-  files: Awaited<ReturnType<typeof getFiles>>;
-}
+export const FilesView = () => {
+  const trpc = useTRPC();
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
-export const FilesView = ({ files }: Props) => {
+  const isMobile = useIsMobile();
+
+  const { data: files } = useSuspenseQuery(trpc.files.getFiles.queryOptions());
+
+  const handleDownload = async (url: string) => {
+    try {
+      const response = await fetch(url, { mode: "cors" });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch file");
+      }
+
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = url.split("/").pop() || "download";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(blobUrl); // Clean up
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+
   return (
-    <div className="p-5 flex flex-wrap gap-3">
-      {files.map((file) => {
-        switch (file.mediaType) {
-          case "image/png":
+    <ScrollArea className="h-screen">
+      <div className="flex flex-wrap pb-40 w-full p-5 gap-3 justify-center md:justify-start">
+        {files.map((file) => {
+          if (file.mediaType === "image/png") {
             return (
-              <Image
+              <div
                 key={file.url}
-                src={file.url}
-                alt="image"
-                width={500}
-                height={500}
-                className="w-[200px] rounded-lg"
-              />
+                className="relative cursor-pointer"
+                onMouseEnter={() => setHoveredImage(file.url)}
+                onMouseLeave={() => setHoveredImage(null)}
+              >
+                {isMobile && (
+                  <div className="bg-gradient-to-b h-[40%] transition-all duration-300 justify-end flex from-neutral-900/80 p-1 to-transparent w-full absolute">
+                    <Button
+                      className="cursor-pointer"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDownload(file.url)}
+                    >
+                      <DownloadIcon className="text-white" />
+                    </Button>
+                  </div>
+                )}
+                {hoveredImage === file.url && !isMobile && (
+                  <div className="bg-gradient-to-b h-[40%] transition-all duration-300 justify-end flex from-neutral-900/80 p-1 to-transparent w-full absolute">
+                    <Button
+                      className="cursor-pointer"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDownload(file.url)}
+                    >
+                      <DownloadIcon className="text-white" />
+                    </Button>
+                  </div>
+                )}
+                <Image
+                  src={file.url}
+                  alt="image"
+                  width={500}
+                  height={500}
+                  className="w-[200px] h-[200px] rounded-lg"
+                />
+              </div>
             );
-        }
-      })}
-    </div>
+          }
+          return null;
+        })}
+      </div>
+    </ScrollArea>
   );
 };
