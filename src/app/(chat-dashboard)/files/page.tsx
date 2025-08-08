@@ -8,6 +8,8 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import React, { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 const FilesPage = async () => {
   const queryClient = getQueryClient();
 
