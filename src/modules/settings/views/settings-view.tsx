@@ -1,6 +1,7 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
+import { SettingsCard } from "../ui/components/settings-card";
 
 interface Props {
   slug: string;
@@ -24,6 +25,8 @@ const General = () => {
       <div className="flex flex-col gap-y-2 w-[50vw]">
         <h1 className="text-2xl font-medium">General</h1>
         <Separator />
+
+        <SettingsCard />
       </div>
     </div>
   );
