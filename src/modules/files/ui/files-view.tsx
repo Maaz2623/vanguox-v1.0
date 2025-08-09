@@ -49,7 +49,7 @@ export const FilesView = () => {
             return (
               <div
                 key={file.url}
-                className="relative cursor-pointer"
+                className="relative cursor-pointer rounded-lg overflow-hidden"
                 onMouseEnter={() => setHoveredImage(file.url)}
                 onMouseLeave={() => setHoveredImage(null)}
               >

@@ -5,10 +5,13 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "nuh2gys8cs.ufs.sh"
-      }
-    ]
-  }
+        hostname: "nuh2gys8cs.ufs.sh",
+      },
+      {
+        hostname: "uos1ovyqrd.ufs.sh",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
