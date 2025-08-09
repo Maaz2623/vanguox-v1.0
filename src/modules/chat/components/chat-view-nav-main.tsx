@@ -53,16 +53,17 @@ export function ChatViewNavMain({ userId }: { userId: string }) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
+              onClick={() => router.push(`/files`)}
               className={cn(
                 "",
                 pathname === "/files" &&
                   "dark:bg-neutral-800 bg-neutral-200 font-semibold"
               )}
             >
-              <Link href={`/files`}>
+              <span>
                 <FilesIcon />
-                <span>Files</span>
-              </Link>
+                Files
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <Collapsible

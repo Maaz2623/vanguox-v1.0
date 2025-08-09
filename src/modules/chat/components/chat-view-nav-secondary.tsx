@@ -10,8 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { SettingsIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +25,7 @@ export function ChatViewNavSecondary({
   }[];
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   const pathname = usePathname();
-
+  const router = useRouter();
   return (
     <>
       <SidebarGroup {...props}>
@@ -35,16 +34,17 @@ export function ChatViewNavSecondary({
             <SidebarMenuItem className="">
               <SidebarMenuButton
                 asChild
+                onClick={() => router.push(`/settings`)}
                 className={cn(
                   "",
                   pathname === "/settings" &&
                     "dark:bg-neutral-800 bg-neutral-200 font-semibold"
                 )}
               >
-                <Link href={`/settings`}>
+                <span className="">
                   <SettingsIcon />
-                  <span>Settings</span>
-                </Link>
+                  Settings
+                </span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
