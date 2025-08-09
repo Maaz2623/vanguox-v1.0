@@ -1,17 +1,10 @@
-import { SettingsView } from "@/modules/settings/views/settings-view";
+import { SettingsNav } from "@/modules/settings/ui/components/settings-nav";
 import React from "react";
 
-interface Props {
-  params: Promise<{
-    settingsSlug: string;
-  }>;
-}
-
-const SettingsPage = async ({ params }: Props) => {
-  const { settingsSlug } = await params;
+const SettingsPage = async () => {
   return (
     <div className="flex items-center">
-      <SettingsView slug={settingsSlug} />
+      <SettingsNav />
     </div>
   );
 };

@@ -10,6 +10,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { SettingsIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function ChatViewNavSecondary({
   items,
@@ -21,21 +25,28 @@ export function ChatViewNavSecondary({
     icon: Icon;
   }[];
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const pathname = usePathname();
+
   return (
     <>
       <SidebarGroup {...props}>
         <SidebarGroupContent>
           <SidebarMenu>
-            {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            <SidebarMenuItem className="">
+              <SidebarMenuButton
+                asChild
+                className={cn(
+                  "",
+                  pathname === "/settings" &&
+                    "dark:bg-neutral-800 bg-neutral-200 font-semibold"
+                )}
+              >
+                <Link href={`/settings`}>
+                  <SettingsIcon />
+                  <span>Settings</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { SettingsNav } from "@/modules/settings/ui/components/settings-nav";
 
 export default async function SettingsLayout({
   children,
@@ -11,8 +10,7 @@ export default async function SettingsLayout({
   return (
     <div className="">
       <Header />
-      <div className="flex p-5">
-        <SettingsNav />
+      <div className="p-5">
         <div className="px-5">{children}</div>
       </div>
     </div>

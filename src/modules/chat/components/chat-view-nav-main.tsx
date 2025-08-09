@@ -51,7 +51,14 @@ export function ChatViewNavMain({ userId }: { userId: string }) {
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton
+              asChild
+              className={cn(
+                "",
+                pathname === "/files" &&
+                  "dark:bg-neutral-800 bg-neutral-200 font-semibold"
+              )}
+            >
               <Link href={`/files`}>
                 <FilesIcon />
                 <span>Files</span>
@@ -79,7 +86,10 @@ export function ChatViewNavMain({ userId }: { userId: string }) {
                       return (
                         <SidebarMenuSubItem key={Math.random()}>
                           <SidebarMenuSubButton
-                            className={cn("", isActive && "bg-neutral-500/10")}
+                            className={cn(
+                              "",
+                              isActive && "bg-neutral-500/10 font-semibold"
+                            )}
                             asChild
                           >
                             <Link href={`/chats/${item._id}`}>
