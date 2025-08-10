@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import TextAreaAutoSize from "react-textarea-autosize";
-import { ArrowUpIcon, Loader2Icon, PlusCircleIcon } from "lucide-react";
+import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { startTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
@@ -58,9 +58,6 @@ export const NewChatTemplateView = ({ userId }: { userId: string }) => {
         </motion.div>
       </AnimatePresence>
       <div className="p-2 w-[95%] md:w-3/4 rounded-lg border border-neutral-200 dark:border-neutral-700 mx-auto flex items-center shadow-lg bg-neutral-200 dark:bg-neutral-800">
-        <Button className="" variant={`ghost`} size={`icon`}>
-          <PlusCircleIcon />
-        </Button>
         <TextAreaAutoSize
           rows={1}
           disabled={loading}
