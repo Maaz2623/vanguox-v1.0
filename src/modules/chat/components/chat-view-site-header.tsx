@@ -7,7 +7,6 @@ import { api } from "../../../../convex/_generated/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
-import { EditIcon } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
 
 export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
@@ -17,15 +16,12 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const [hasAnimationCompleted, setHasAnimationCompleted] = useState(false);
   const [typewriterKey, setTypewriterKey] = useState(0);
 
   // Update title and reset animation when data.title changes
   useEffect(() => {
     if (data?.title) {
       setTitle(data.title);
-      setHasAnimationCompleted(false);
       setTypewriterKey((prev) => prev + 1); // force remount Typewriter
     }
   }, [data?.title]);
@@ -78,12 +74,8 @@ export function ChatViewSiteHeader({ chatId }: { chatId: string }) {
                     typeSpeed={50}
                     deleteSpeed={0}
                     delaySpeed={1000}
-                    onLoopDone={() => setHasAnimationCompleted(true)}
                   />
                 </span>
-                {hasAnimationCompleted && (
-                  <EditIcon className="size-4 text-muted-foreground" />
-                )}
               </div>
             )}
           </div>
